@@ -3,24 +3,33 @@ package com.company;
 import java.util.ArrayList;
 
 public class Board {
-    private int high;
-    private int large;
-    private ArrayList<Box> board;
+    private int row;
+    private int column;
+    private String[][] board;
 
-    public Board (int high, int large) {
-        this.high = high;
-        this.large = large;
+    public Board (int row, int column) {
+        this.row = row;
+        this.column = column;
+        this.board = new String[row][column];
     }
 
-    public static ArrayList<Box> createBoard (int high, int large) {
-
-        ArrayList<Box> board = new ArrayList<Box>();
-
-        for (int i = 0; i < high; i++) {
-            for (int j = 0; j < large; j++) {
-                board.add(new Box(i, j, "·"));
+    private void createBoard() {
+        for (int i = 0; i < this.board.length; i++) {
+            for (int j = 0; j < this.board[i].length; j++) {
+                this.board[i][j] = "#";
             }
         }
-        return board;
+    }
+
+    public void printBoard() {
+
+        createBoard();
+
+        for (int i = 0; i < this.board.length; i++) {
+            for (int j = 0; j < this.board[i].length; j++) {
+                System.out.print(this.board[i][j] + " ");
+            }
+            System.out.println();
+        }
     }
 }
