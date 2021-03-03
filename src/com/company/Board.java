@@ -1,33 +1,39 @@
 package com.company;
 
-import java.util.ArrayList;
+import java.util.Random;
 
 public class Board {
-    private int row;
-    private int column;
-    private String[][] board;
+    private Box[][] board;
 
     public Board (int row, int column) {
-        this.row = row;
-        this.column = column;
-        this.board = new String[row][column];
-    }
+        // HE DE CREAR ES TABLERO AMB UNA MATRIU DE BOXES
 
-    private void createBoard() {
-        for (int i = 0; i < this.board.length; i++) {
-            for (int j = 0; j < this.board[i].length; j++) {
-                this.board[i][j] = "#";
+        /*for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[i].length; j++) {
+                this.board[i][j] = new Box(i, j);
             }
-        }
+        }*/
     }
 
-    public void printBoard() {
 
-        createBoard();
+    /*private void putBomb() {
+
+        int randomRow = new Random().nextInt(row + 1);
+        int randomColumn = new Random().nextInt(this.column + 1);
+
+        this.board[randomRow][randomColumn] = "0";
+
+    }*/
+
+    public void printBoard(int numberOfBombs) {
+
+        /*for (int i = 0; i < numberOfBombs; i++) {
+            putBomb();
+        }*/
 
         for (int i = 0; i < this.board.length; i++) {
             for (int j = 0; j < this.board[i].length; j++) {
-                System.out.print(this.board[i][j] + " ");
+                System.out.print(this.board[i][j].getState() + " ");
             }
             System.out.println();
         }
