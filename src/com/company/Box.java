@@ -4,25 +4,19 @@ public class Box {
 
     private int rowPosition;
     private int columnPosition;
-    private String state;
-
-    private final String INITIAL = "#";
-    private final String FLAG = "?";
-    private final String NOTHING = "·";
-    private final String HIDDEN_BOMB = "#";
-    private final String BOMB = "0";
+    private BoxState state;
 
     public Box (int rowPosition, int columnPosition) {
         this.rowPosition = rowPosition;
         this.columnPosition = columnPosition;
-        this.state = INITIAL;
+        this.state = BoxState.INITIAL;
     }
 
     public String getState() {
-        return state;
+        return state.getValue();
     }
 
-    public void setState(String state) {
+    public void setState(BoxState state) {
         this.state = state;
     }
 

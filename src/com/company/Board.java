@@ -3,39 +3,63 @@ package com.company;
 import java.util.Random;
 
 public class Board {
+    private int numRows;
+    private int numColumns;
     private Box[][] board;
 
-    public Board (int row, int column) {
+    public Board (int numRows, int numColumns) {
         // HE DE CREAR ES TABLERO AMB UNA MATRIU DE BOXES
 
-        /*for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                this.board[i][j] = new Box(i, j);
-            }
-        }*/
-    }
+        this.board = new Box[numRows][numColumns];
+        this.numRows = numRows;
+        this.numColumns = numColumns;
 
-
-    /*private void putBomb() {
-
-        int randomRow = new Random().nextInt(row + 1);
-        int randomColumn = new Random().nextInt(this.column + 1);
-
-        this.board[randomRow][randomColumn] = "0";
-
-    }*/
-
-    public void printBoard(int numberOfBombs) {
-
-        /*for (int i = 0; i < numberOfBombs; i++) {
-            putBomb();
-        }*/
 
         for (int i = 0; i < this.board.length; i++) {
             for (int j = 0; j < this.board[i].length; j++) {
-                System.out.print(this.board[i][j].getState() + " ");
+                this.board[i][j] = new Box(i, j);
             }
-            System.out.println();
+        }
+    }
+
+
+    private void createBomb() {
+
+        int randomRow = new Random().nextInt(this.numRows);
+        int randomColumn = new Random().nextInt(this.numColumns);
+
+        if (!this.board[randomRow][randomColumn].getState().equals(BoxState.BOMB.getValue())) {
+            this.board[randomRow][randomColumn].setState(BoxState.BOMB);
+        } else {
+            createBomb();
+        }
+
+    }
+
+    private boolean checkNumBombs(int numberOfBombs) {
+
+        if (numberOfBombs < (this.numRows * this.numColumns)){
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void printBoard(int numberOfBombs) {
+
+        if(!checkNumBombs(numberOfBombs)) {
+            System.out.println("No pots posar tantes bombes");
+        }else {
+            for (int i = 0; i < numberOfBombs; i++) {
+                createBomb();
+            }
+
+            for (int i = 0; i < this.board.length; i++) {
+                for (int j = 0; j < this.board[i].length; j++) {
+                    System.out.print(this.board[i][j].getState() + " ");
+                }
+                System.out.println();
+            }
         }
     }
 }
