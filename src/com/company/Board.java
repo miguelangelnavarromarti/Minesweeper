@@ -17,11 +17,10 @@ public class Board {
 
         for (int i = 0; i < this.board.length; i++) {
             for (int j = 0; j < this.board[i].length; j++) {
-                this.board[i][j] = new Box(i, j);
+                this.board[i][j] = new Box();
             }
         }
     }
-
 
     private void createBomb() {
 
@@ -33,7 +32,6 @@ public class Board {
         } else {
             createBomb();
         }
-
     }
 
     private boolean checkNumBombs(int numberOfBombs) {

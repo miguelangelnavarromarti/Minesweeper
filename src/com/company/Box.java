@@ -2,13 +2,9 @@ package com.company;
 
 public class Box {
 
-    private int rowPosition;
-    private int columnPosition;
     private BoxState state;
 
-    public Box (int rowPosition, int columnPosition) {
-        this.rowPosition = rowPosition;
-        this.columnPosition = columnPosition;
+    public Box () {
         this.state = BoxState.INITIAL;
     }
 
