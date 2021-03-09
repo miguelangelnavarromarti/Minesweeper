@@ -54,7 +54,11 @@ public class Board {
 
             for (int i = 0; i < this.board.length; i++) {
                 for (int j = 0; j < this.board[i].length; j++) {
-                    System.out.print(this.board[i][j].getState() + " ");
+                    if (this.board[i][j].getState().equals(BoxState.BOMB.getValue())){
+                        System.out.print(Color.RED + this.board[i][j].getState() + " " + Color.RESET);
+                    } else {
+                        System.out.print(this.board[i][j].getState() + " ");
+                    }
                 }
                 System.out.println();
             }
