@@ -5,7 +5,7 @@ public enum BoxState {
     FLAG("?"),
     EMPTY("·"),
     HIDDEN_BOMB("#"),
-    BOMB("0");
+    BOMB("X");
 
     private String value;
 
