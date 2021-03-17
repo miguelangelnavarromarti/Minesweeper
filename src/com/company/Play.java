@@ -56,18 +56,25 @@ public class Play {
 
     private static void start(int answer) {
         Scanner sc = new Scanner(System.in);
+
         switch (answer) {
             case 1:
                 Board principiant = new Board(8, 8);
-                principiant.printBoard(10);
+                principiant.printBoard();
+                principiant.selectBox();
+                principiant.printBoardWithBombs(63);
                 break;
             case 2:
                 Board normal = new Board (16, 16);
-                normal.printBoard(40);
+                normal.printBoard();
+
+                normal.printBoardWithBombs(40);
                 break;
             case 3:
                 Board dificil = new Board (16, 32);
-                dificil.printBoard(99);
+                dificil.printBoard();
+
+                dificil.printBoardWithBombs(99);
                 break;
             case 4:
                 // Comprova les files
@@ -86,8 +93,11 @@ public class Play {
                 int checkedBombs = checkBombs(answerBombs, checkedRows, checkedColumns);
                 Board personalitzat = new Board(checkedRows, checkedColumns);
 
-                //Aquí cream el taulell
-                personalitzat.printBoard(checkedBombs);
+                //Aquí cream el taulell (sense bombes)
+                personalitzat.printBoard();
+
+                //Aquí cream el taulell amb bombes
+                personalitzat.printBoardWithBombs(checkedBombs);
                 break;
             case 5:
                 // Falta afegir tota la funcionalitat

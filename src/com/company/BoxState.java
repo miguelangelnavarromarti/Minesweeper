@@ -3,7 +3,7 @@ package com.company;
 public enum BoxState {
     INITIAL("#"),
     FLAG("?"),
-    EMPTY("·"),
+    EMPTY("0"),
     HIDDEN_BOMB("#"),
     BOMB("X");
 
