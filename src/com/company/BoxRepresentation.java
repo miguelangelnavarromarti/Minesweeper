@@ -1,6 +1,6 @@
 package com.company;
 
-public enum BoxState {
+public enum BoxRepresentation {
     INITIAL("#"),
     FLAG("?"),
     EMPTY("0"),
@@ -9,7 +9,7 @@ public enum BoxState {
 
     private String value;
 
-    private BoxState (String value) {
+    private BoxRepresentation(String value) {
         this.value = value;
     }
 

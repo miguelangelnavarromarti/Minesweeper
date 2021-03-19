@@ -61,20 +61,20 @@ public class Play {
             case 1:
                 Board principiant = new Board(8, 8);
                 principiant.printBoard();
-                principiant.selectBox();
-                principiant.printBoardWithBombs(63);
+                int[] firstBox = principiant.selectFirstBox();
+                principiant.printBoardFirstMove(63, firstBox);
                 break;
             case 2:
                 Board normal = new Board (16, 16);
                 normal.printBoard();
 
-                normal.printBoardWithBombs(40);
+                //normal.printBoardFirstMove(40);
                 break;
             case 3:
                 Board dificil = new Board (16, 32);
                 dificil.printBoard();
 
-                dificil.printBoardWithBombs(99);
+                //dificil.printBoardFirstMove(99);
                 break;
             case 4:
                 // Comprova les files
@@ -87,7 +87,7 @@ public class Play {
                 int answerColumns = sc.nextInt();
                 int checkedColumns = checkColumns(answerColumns);
 
-                //Falta comprovar si el númeor de bombes introduit es vàlid
+                //Falta comprovar si el número de bombes introduit es vàlid
                 System.out.println("Quantes bombes vols que tengui el taulell?");
                 int answerBombs = sc.nextInt();
                 int checkedBombs = checkBombs(answerBombs, checkedRows, checkedColumns);
@@ -97,7 +97,7 @@ public class Play {
                 personalitzat.printBoard();
 
                 //Aquí cream el taulell amb bombes
-                personalitzat.printBoardWithBombs(checkedBombs);
+                //personalitzat.printBoardFirstMove(checkedBombs);
                 break;
             case 5:
                 // Falta afegir tota la funcionalitat
