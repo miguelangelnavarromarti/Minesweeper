@@ -11,7 +11,7 @@ public class Box {
     //CONSTRUCTOR
 
     public Box () {
-        this.state = BoxRepresentation.INITIAL;
+        this.state = BoxRepresentation.COVERED;
         this.covered = true;
         this.flag = false;
         this.bomb = false;
@@ -60,5 +60,24 @@ public class Box {
 
     public void setBombsAround(int bombsAround) {
         this.bombsAround = bombsAround;
+        cover(false);
+        switch (bombsAround){
+            case 1:
+                setState(BoxRepresentation.ONE);
+            case 2:
+                setState(BoxRepresentation.TWO);
+            case 3:
+                setState(BoxRepresentation.THREE);
+            case 4:
+                setState(BoxRepresentation.FOUR);
+            case 5:
+                setState(BoxRepresentation.FIVE);
+            case 6:
+                setState(BoxRepresentation.SIX);
+            case 7:
+                setState(BoxRepresentation.SEVEN);
+            case 8:
+                setState(BoxRepresentation.EIGHT);
+        }
     }
 }

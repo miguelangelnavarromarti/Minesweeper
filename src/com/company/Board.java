@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -74,6 +75,7 @@ public class Board {
 
         if (!this.board[randomRow][randomColumn].hasBomb() && this.board[randomRow][randomColumn].isCovered()){
             this.board[randomRow][randomColumn].setState(BoxRepresentation.BOMB);
+            this.board[randomRow][randomColumn].putBomb(true);
         } else {
             createBomb();
         }
@@ -102,15 +104,73 @@ public class Board {
         return firstBox;
     }
 
-    //DESTAPAR LES 8 CASELLES VOLTANTS DE LA SELECCIONADA
-
     private void uncoverFirstBox(int[] firstBoxPlace) {
-        this.board[firstBoxPlace[0]][firstBoxPlace[1]].setState(BoxRepresentation.EMPTY);
+        this.board[firstBoxPlace[0]][firstBoxPlace[1]].cover(false);
     }
 
-    /*private void uncoverAroundFirstBox(int[] firstBoxPlace) {
+    /**
+     * Taulell de condicions depenent de la posicio de la primera casella destapada
+     * 1 - 4 - 7
+     * - - - - -
+     * 2 - 5 - 8
+     * - - - - -
+     * 3 - 6 - 9
+     */
 
-    }*/
+    private void uncoverAroundFirstBox(int[] firstBoxPlace) {
+
+        if /* 1 */(firstBoxPlace[0] == 0 && firstBoxPlace[1] == 0) {
+            this.board[firstBoxPlace[0]][firstBoxPlace[1]+1].cover(false);
+            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]].cover(false);
+            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]+1].cover(false);
+        } else if /* 2 */(firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] == 0){
+            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]].cover(false);
+            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]+1].cover(false);
+            this.board[firstBoxPlace[0]][firstBoxPlace[1]+1].cover(false);
+            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]].cover(false);
+            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]+1].cover(false);
+        } else if /* 3 */(firstBoxPlace[0] == this.numRows-1 && firstBoxPlace[1] == 0) {
+            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]].cover(false);
+            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]+1].cover(false);
+            this.board[firstBoxPlace[0]][firstBoxPlace[1]+1].cover(false);
+        } else if /* 4 */(firstBoxPlace[0] == 0 && firstBoxPlace[1] > 0 && firstBoxPlace[1] < this.numColumns-1) {
+            this.board[firstBoxPlace[0]][firstBoxPlace[1]-1].cover(false);
+            this.board[firstBoxPlace[0]][firstBoxPlace[1]+1].cover(false);
+            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]-1].cover(false);
+            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]].cover(false);
+            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]+1].cover(false);
+        } else if /* 5 */(firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] > 0 && firstBoxPlace[1] < this.numColumns-1) {
+            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]-1].cover(false);
+            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]].cover(false);
+            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]+1].cover(false);
+            this.board[firstBoxPlace[0]][firstBoxPlace[1]-1].cover(false);
+            this.board[firstBoxPlace[0]][firstBoxPlace[1]+1].cover(false);
+            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]-1].cover(false);
+            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]].cover(false);
+            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]+1].cover(false);
+        } else if /* 6 */(firstBoxPlace[0] == this.numRows-1 && firstBoxPlace[1] > 0 && firstBoxPlace[1] < this.numColumns-1) {
+            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]-1].cover(false);
+            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]].cover(false);
+            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]+1].cover(false);
+            this.board[firstBoxPlace[0]][firstBoxPlace[1]-1].cover(false);
+            this.board[firstBoxPlace[0]][firstBoxPlace[1]+1].cover(false);
+        } else if /* 7 */(firstBoxPlace[0] == 0 && firstBoxPlace[1] == this.numColumns-1) {
+            this.board[firstBoxPlace[0]][firstBoxPlace[1]-1].cover(false);
+            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]-1].cover(false);
+            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]].cover(false);
+        } else if /* 8 */(firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] == this.numColumns-1) {
+            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]-1].cover(false);
+            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]].cover(false);
+            this.board[firstBoxPlace[0]][firstBoxPlace[1]-1].cover(false);
+            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]-1].cover(false);
+            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]].cover(false);
+        } else if /* 9 */(firstBoxPlace[0] == this.numRows-1 && firstBoxPlace[1] == this.numColumns-1) {
+            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]-1].cover(false);
+            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]].cover(false);
+            this.board[firstBoxPlace[0]][firstBoxPlace[1]-1].cover(false);
+        }
+    }
+    // CANVIAR TOTS ES COVER PER BOMBSAROUND I PENSAR: POSAR BOMBES, POSAR ES VALOR A BOMBAROUND I NOMÉS DESTAPAR SES VOLTATS
 
     public void printBoardFirstMove(int numberOfBombs, int[] firstBox) {
         /**
@@ -121,11 +181,77 @@ public class Board {
          */
 
         uncoverFirstBox(firstBox);
+        uncoverAroundFirstBox(firstBox);
 
         for (int i = 0; i < numberOfBombs; i++) {
             createBomb();
         }
 
         printBoard();
+    }
+
+    //DIR QUANTES BOMBES HI HA AL VOLTANT D'UNA CASELLA
+
+    private void checkBombsAroundFirstBox(int[] boxPlace) {
+
+        int counter = 0;
+
+        if /* 1 */(boxPlace[0] == 0 && boxPlace[1] == 0) {
+            if (this.board[boxPlace[0]][boxPlace[1]+1].hasBomb()) {
+                counter++;
+            }
+            if (this.board[boxPlace[0]+1][boxPlace[1]].hasBomb()) {
+                counter++;
+            }
+            if(this.board[boxPlace[0]+1][boxPlace[1]+1].hasBomb()) {
+                counter++;
+            }
+            this.board[boxPlace[0]][boxPlace[1]].setBombsAround(counter);
+        } else if /* 2 */(boxPlace[0] > 0 && boxPlace[0] < this.numRows-1 && boxPlace[1] == 0){
+            this.board[boxPlace[0]-1][boxPlace[1]].cover(false);
+            this.board[boxPlace[0]-1][boxPlace[1]+1].cover(false);
+            this.board[boxPlace[0]][boxPlace[1]+1].cover(false);
+            this.board[boxPlace[0]+1][boxPlace[1]].cover(false);
+            this.board[boxPlace[0]+1][boxPlace[1]+1].cover(false);
+        } else if /* 3 */(boxPlace[0] == this.numRows-1 && boxPlace[1] == 0) {
+            this.board[boxPlace[0]-1][boxPlace[1]].cover(false);
+            this.board[boxPlace[0]-1][boxPlace[1]+1].cover(false);
+            this.board[boxPlace[0]][boxPlace[1]+1].cover(false);
+        } else if /* 4 */(boxPlace[0] == 0 && boxPlace[1] > 0 && boxPlace[1] < this.numColumns-1) {
+            this.board[boxPlace[0]][boxPlace[1]-1].cover(false);
+            this.board[boxPlace[0]][boxPlace[1]+1].cover(false);
+            this.board[boxPlace[0]+1][boxPlace[1]-1].cover(false);
+            this.board[boxPlace[0]+1][boxPlace[1]].cover(false);
+            this.board[boxPlace[0]+1][boxPlace[1]+1].cover(false);
+        } else if /* 5 */(boxPlace[0] > 0 && boxPlace[0] < this.numRows-1 && boxPlace[1] > 0 && boxPlace[1] < this.numColumns-1) {
+            this.board[boxPlace[0]-1][boxPlace[1]-1].cover(false);
+            this.board[boxPlace[0]-1][boxPlace[1]].cover(false);
+            this.board[boxPlace[0]-1][boxPlace[1]+1].cover(false);
+            this.board[boxPlace[0]][boxPlace[1]-1].cover(false);
+            this.board[boxPlace[0]][boxPlace[1]+1].cover(false);
+            this.board[boxPlace[0]+1][boxPlace[1]-1].cover(false);
+            this.board[boxPlace[0]+1][boxPlace[1]].cover(false);
+            this.board[boxPlace[0]+1][boxPlace[1]+1].cover(false);
+        } else if /* 6 */(boxPlace[0] == this.numRows-1 && boxPlace[1] > 0 && boxPlace[1] < this.numColumns-1) {
+            this.board[boxPlace[0]-1][boxPlace[1]-1].cover(false);
+            this.board[boxPlace[0]-1][boxPlace[1]].cover(false);
+            this.board[boxPlace[0]-1][boxPlace[1]+1].cover(false);
+            this.board[boxPlace[0]][boxPlace[1]-1].cover(false);
+            this.board[boxPlace[0]][boxPlace[1]+1].cover(false);
+        } else if /* 7 */(boxPlace[0] == 0 && boxPlace[1] == this.numColumns-1) {
+            this.board[boxPlace[0]][boxPlace[1]-1].cover(false);
+            this.board[boxPlace[0]+1][boxPlace[1]-1].cover(false);
+            this.board[boxPlace[0]+1][boxPlace[1]].cover(false);
+        } else if /* 8 */(boxPlace[0] > 0 && boxPlace[0] < this.numRows-1 && boxPlace[1] == this.numColumns-1) {
+            this.board[boxPlace[0]-1][boxPlace[1]-1].cover(false);
+            this.board[boxPlace[0]-1][boxPlace[1]].cover(false);
+            this.board[boxPlace[0]][boxPlace[1]-1].cover(false);
+            this.board[boxPlace[0]+1][boxPlace[1]-1].cover(false);
+            this.board[boxPlace[0]+1][boxPlace[1]].cover(false);
+        } else if /* 9 */(boxPlace[0] == this.numRows-1 && boxPlace[1] == this.numColumns-1) {
+            this.board[boxPlace[0]-1][boxPlace[1]-1].cover(false);
+            this.board[boxPlace[0]-1][boxPlace[1]].cover(false);
+            this.board[boxPlace[0]][boxPlace[1]-1].cover(false);
+        }
     }
 }

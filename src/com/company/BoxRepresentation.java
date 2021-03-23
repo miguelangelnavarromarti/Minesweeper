@@ -1,11 +1,18 @@
 package com.company;
 
 public enum BoxRepresentation {
-    INITIAL("#"),
+    COVERED("#"),
     FLAG("?"),
     EMPTY("0"),
-    HIDDEN_BOMB("#"),
-    BOMB("X");
+    BOMB("X"),
+    ONE("1"),
+    TWO("2"),
+    THREE("3"),
+    FOUR("4"),
+    FIVE("5"),
+    SIX("6"),
+    SEVEN("7"),
+    EIGHT("8");
 
     private String value;
 
