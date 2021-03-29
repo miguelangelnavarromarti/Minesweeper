@@ -3,8 +3,8 @@ package com.company;
 public enum BoxRepresentation {
     COVERED("#"),
     FLAG("?"),
-    EMPTY("0"),
     BOMB("X"),
+    ZERO("0"),
     ONE("1"),
     TWO("2"),
     THREE("3"),

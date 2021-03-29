@@ -29,8 +29,8 @@ public class Play {
     private static int checkBombs (int bomb, int rows, int columns) {
         Scanner sc = new Scanner(System.in);
 
-        if (bomb >= rows * columns) {
-            System.out.println("Has d'introduir un número de bombes inferior a " + rows * columns);
+        if (bomb >= (rows * columns)-8) {
+            System.out.println("Has d'introduir un número de bombes inferior a " + (rows * columns - 8));
             int answer = sc.nextInt();
             return checkBombs(answer, rows, columns);
         }
@@ -62,7 +62,7 @@ public class Play {
                 Board principiant = new Board(8, 8);
                 principiant.printBoard();
                 int[] firstBox = principiant.selectFirstBox();
-                principiant.printBoardFirstMove(63, firstBox);
+                principiant.printBoardFirstMove(10, firstBox);
                 break;
             case 2:
                 Board normal = new Board (16, 16);

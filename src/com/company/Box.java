@@ -60,8 +60,10 @@ public class Box {
 
     public void setBombsAround(int bombsAround) {
         this.bombsAround = bombsAround;
-        cover(false);
         switch (bombsAround){
+            case 0:
+                setState(BoxRepresentation.ZERO);
+                break;
             case 1:
                 setState(BoxRepresentation.ONE);
                 break;

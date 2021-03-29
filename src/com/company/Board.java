@@ -68,16 +68,20 @@ public class Board {
         return answerColumn;
     }
 
-    private void createBomb() {
+    private void createBomb(int numberOfBombs) {
 
         int randomRow = new Random().nextInt(this.numRows);
         int randomColumn = new Random().nextInt(this.numColumns);
 
-        if (!this.board[randomRow][randomColumn].hasBomb() && this.board[randomRow][randomColumn].isCovered()){
+        if (numberOfBombs == 0){
+            return;
+        }
+
+        if (!this.board[randomRow][randomColumn].hasBomb() && this.board[randomRow][randomColumn].isCovered()) {
             this.board[randomRow][randomColumn].setState(BoxRepresentation.BOMB);
             this.board[randomRow][randomColumn].putBomb(true);
         } else {
-            createBomb();
+            createBomb(numberOfBombs-1);
         }
     }
 
@@ -170,7 +174,161 @@ public class Board {
             this.board[firstBoxPlace[0]][firstBoxPlace[1]-1].cover(false);
         }
     }
-    // CANVIAR TOTS ES COVER PER BOMBSAROUND I PENSAR: POSAR BOMBES, POSAR ES VALOR A BOMBAROUND I NOMÉS DESTAPAR SES VOLTATS
+
+    private void checkBombsAround(int[] boxPlace) {
+
+        int counter = 0;
+
+        if (!this.board[boxPlace[0]][boxPlace[1]].hasBomb()) {
+            if /* 1 */(boxPlace[0] == 0 && boxPlace[1] == 0) {
+                if (this.board[boxPlace[0]][boxPlace[1]+1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]+1][boxPlace[1]].hasBomb()) {
+                    counter++;
+                }
+                if(this.board[boxPlace[0]+1][boxPlace[1]+1].hasBomb()) {
+                    counter++;
+                }
+                this.board[boxPlace[0]][boxPlace[1]].setBombsAround(counter);
+
+            } else if /* 2 */(boxPlace[0] > 0 && boxPlace[0] < this.numRows-1 && boxPlace[1] == 0){
+                if (this.board[boxPlace[0]-1][boxPlace[1]].hasBomb()){
+                    counter++;
+                }
+                if (this.board[boxPlace[0]-1][boxPlace[1]+1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]][boxPlace[1]+1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]+1][boxPlace[1]].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]+1][boxPlace[1]+1].hasBomb()) {
+                    counter++;
+                }
+                this.board[boxPlace[0]][boxPlace[1]].setBombsAround(counter);
+
+            } else if /* 3 */(boxPlace[0] == this.numRows-1 && boxPlace[1] == 0) {
+                if (this.board[boxPlace[0]-1][boxPlace[1]].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]-1][boxPlace[1]+1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]][boxPlace[1]+1].hasBomb()) {
+                    counter++;
+                }
+                this.board[boxPlace[0]][boxPlace[1]].setBombsAround(counter);
+
+            } else if /* 4 */(boxPlace[0] == 0 && boxPlace[1] > 0 && boxPlace[1] < this.numColumns-1) {
+                if (this.board[boxPlace[0]][boxPlace[1]-1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]][boxPlace[1]+1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]+1][boxPlace[1]-1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]+1][boxPlace[1]].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]+1][boxPlace[1]+1].hasBomb()) {
+                    counter++;
+                }
+                this.board[boxPlace[0]][boxPlace[1]].setBombsAround(counter);
+
+            } else if /* 5 */(boxPlace[0] > 0 && boxPlace[0] < this.numRows-1 && boxPlace[1] > 0 && boxPlace[1] < this.numColumns-1) {
+                if (this.board[boxPlace[0]-1][boxPlace[1]-1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]-1][boxPlace[1]].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]-1][boxPlace[1]+1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]][boxPlace[1]-1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]][boxPlace[1]+1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]+1][boxPlace[1]-1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]+1][boxPlace[1]].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]+1][boxPlace[1]+1].hasBomb()) {
+                    counter++;
+                }
+                this.board[boxPlace[0]][boxPlace[1]].setBombsAround(counter);
+
+            } else if /* 6 */(boxPlace[0] == this.numRows-1 && boxPlace[1] > 0 && boxPlace[1] < this.numColumns-1) {
+                if (this.board[boxPlace[0]-1][boxPlace[1]-1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]-1][boxPlace[1]].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]-1][boxPlace[1]+1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]][boxPlace[1]-1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]][boxPlace[1]+1].hasBomb()) {
+                    counter++;
+                }
+                this.board[boxPlace[0]][boxPlace[1]].setBombsAround(counter);
+
+            } else if /* 7 */(boxPlace[0] == 0 && boxPlace[1] == this.numColumns-1) {
+                if (this.board[boxPlace[0]][boxPlace[1]-1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]+1][boxPlace[1]-1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]+1][boxPlace[1]].hasBomb()) {
+                    counter++;
+                }
+                this.board[boxPlace[0]][boxPlace[1]].setBombsAround(counter);
+
+            } else if /* 8 */(boxPlace[0] > 0 && boxPlace[0] < this.numRows-1 && boxPlace[1] == this.numColumns-1) {
+                if (this.board[boxPlace[0]-1][boxPlace[1]-1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]-1][boxPlace[1]].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]][boxPlace[1]-1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]+1][boxPlace[1]-1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]+1][boxPlace[1]].hasBomb()) {
+                    counter++;
+                }
+                this.board[boxPlace[0]][boxPlace[1]].setBombsAround(counter);
+
+            } else if /* 9 */(boxPlace[0] == this.numRows-1 && boxPlace[1] == this.numColumns-1) {
+                if (this.board[boxPlace[0]-1][boxPlace[1]-1].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]-1][boxPlace[1]].hasBomb()) {
+                    counter++;
+                }
+                if (this.board[boxPlace[0]][boxPlace[1]-1].hasBomb()) {
+                    counter++;
+                }
+                this.board[boxPlace[0]][boxPlace[1]].setBombsAround(counter);
+            }
+        }
+    }
 
     public void printBoardFirstMove(int numberOfBombs, int[] firstBox) {
         /**
@@ -184,74 +342,22 @@ public class Board {
         uncoverAroundFirstBox(firstBox);
 
         for (int i = 0; i < numberOfBombs; i++) {
-            createBomb();
+            createBomb(numberOfBombs);
+        }
+
+        for (int row = 0; row < this.board.length; row++) {
+            for (int column = 0; column < this.board[row].length; column++) {
+                int[] placeBox = {row, column};
+                checkBombsAround(placeBox);
+            }
         }
 
         printBoard();
     }
 
-    //DIR QUANTES BOMBES HI HA AL VOLTANT D'UNA CASELLA
-
-    private void checkBombsAroundFirstBox(int[] boxPlace) {
-
-        int counter = 0;
-
-        if /* 1 */(boxPlace[0] == 0 && boxPlace[1] == 0) {
-            if (this.board[boxPlace[0]][boxPlace[1]+1].hasBomb()) {
-                counter++;
-            }
-            if (this.board[boxPlace[0]+1][boxPlace[1]].hasBomb()) {
-                counter++;
-            }
-            if(this.board[boxPlace[0]+1][boxPlace[1]+1].hasBomb()) {
-                counter++;
-            }
-            this.board[boxPlace[0]][boxPlace[1]].setBombsAround(counter);
-        } else if /* 2 */(boxPlace[0] > 0 && boxPlace[0] < this.numRows-1 && boxPlace[1] == 0){
-            this.board[boxPlace[0]-1][boxPlace[1]].cover(false);
-            this.board[boxPlace[0]-1][boxPlace[1]+1].cover(false);
-            this.board[boxPlace[0]][boxPlace[1]+1].cover(false);
-            this.board[boxPlace[0]+1][boxPlace[1]].cover(false);
-            this.board[boxPlace[0]+1][boxPlace[1]+1].cover(false);
-        } else if /* 3 */(boxPlace[0] == this.numRows-1 && boxPlace[1] == 0) {
-            this.board[boxPlace[0]-1][boxPlace[1]].cover(false);
-            this.board[boxPlace[0]-1][boxPlace[1]+1].cover(false);
-            this.board[boxPlace[0]][boxPlace[1]+1].cover(false);
-        } else if /* 4 */(boxPlace[0] == 0 && boxPlace[1] > 0 && boxPlace[1] < this.numColumns-1) {
-            this.board[boxPlace[0]][boxPlace[1]-1].cover(false);
-            this.board[boxPlace[0]][boxPlace[1]+1].cover(false);
-            this.board[boxPlace[0]+1][boxPlace[1]-1].cover(false);
-            this.board[boxPlace[0]+1][boxPlace[1]].cover(false);
-            this.board[boxPlace[0]+1][boxPlace[1]+1].cover(false);
-        } else if /* 5 */(boxPlace[0] > 0 && boxPlace[0] < this.numRows-1 && boxPlace[1] > 0 && boxPlace[1] < this.numColumns-1) {
-            this.board[boxPlace[0]-1][boxPlace[1]-1].cover(false);
-            this.board[boxPlace[0]-1][boxPlace[1]].cover(false);
-            this.board[boxPlace[0]-1][boxPlace[1]+1].cover(false);
-            this.board[boxPlace[0]][boxPlace[1]-1].cover(false);
-            this.board[boxPlace[0]][boxPlace[1]+1].cover(false);
-            this.board[boxPlace[0]+1][boxPlace[1]-1].cover(false);
-            this.board[boxPlace[0]+1][boxPlace[1]].cover(false);
-            this.board[boxPlace[0]+1][boxPlace[1]+1].cover(false);
-        } else if /* 6 */(boxPlace[0] == this.numRows-1 && boxPlace[1] > 0 && boxPlace[1] < this.numColumns-1) {
-            this.board[boxPlace[0]-1][boxPlace[1]-1].cover(false);
-            this.board[boxPlace[0]-1][boxPlace[1]].cover(false);
-            this.board[boxPlace[0]-1][boxPlace[1]+1].cover(false);
-            this.board[boxPlace[0]][boxPlace[1]-1].cover(false);
-            this.board[boxPlace[0]][boxPlace[1]+1].cover(false);
-        } else if /* 7 */(boxPlace[0] == 0 && boxPlace[1] == this.numColumns-1) {
-            this.board[boxPlace[0]][boxPlace[1]-1].cover(false);
-            this.board[boxPlace[0]+1][boxPlace[1]-1].cover(false);
-            this.board[boxPlace[0]+1][boxPlace[1]].cover(false);
-        } else if /* 8 */(boxPlace[0] > 0 && boxPlace[0] < this.numRows-1 && boxPlace[1] == this.numColumns-1) {
-            this.board[boxPlace[0]-1][boxPlace[1]-1].cover(false);
-            this.board[boxPlace[0]-1][boxPlace[1]].cover(false);
-            this.board[boxPlace[0]][boxPlace[1]-1].cover(false);
-            this.board[boxPlace[0]+1][boxPlace[1]-1].cover(false);
-            this.board[boxPlace[0]+1][boxPlace[1]].cover(false);
-        } else if /* 9 */(boxPlace[0] == this.numRows-1 && boxPlace[1] == this.numColumns-1) {
-            this.board[boxPlace[0]-1][boxPlace[1]-1].cover(false);
-            this.board[boxPlace[0]-1][boxPlace[1]].cover(false);
-            this.board[boxPlace[0]][boxPlace[1]-1].cover(false);
-        }
-    }
+    // FUNCIONALITAT POSAR BOMBES I DIR SES BOMBES QUE HI HA AL VOLTANT, CONTROLADA
+    /**
+     * Tapar taulell
+     * Demanar següent Box i quin tipo d'acció
+     */
 }
