@@ -78,7 +78,7 @@ public class Board {
         }
 
         if (!this.board[randomRow][randomColumn].hasBomb() && this.board[randomRow][randomColumn].isCovered()) {
-            this.board[randomRow][randomColumn].setState(BoxRepresentation.BOMB);
+            //this.board[randomRow][randomColumn].setState(BoxRepresentation.BOMB);
             this.board[randomRow][randomColumn].putBomb(true);
         } else {
             createBomb(numberOfBombs-1);
@@ -88,11 +88,11 @@ public class Board {
     public void printBoard() {
         for (int i = 0; i < this.board.length; i++) {
             for (int j = 0; j < this.board[i].length; j++) {
-                if (this.board[i][j].hasBomb()){
-                    System.out.print(Color.RED + this.board[i][j].getState() + " " + Color.RESET);
-                } else {
+                //if (this.board[i][j].hasBomb()){
+                //    System.out.print(Color.RED + this.board[i][j].getState() + " " + Color.RESET);
+                //} else {
                     System.out.print(this.board[i][j].getState() + " ");
-                }
+                //}
             }
             System.out.println();
         }
@@ -360,4 +360,88 @@ public class Board {
      * Tapar taulell
      * Demanar següent Box i quin tipo d'acció
      */
+
+    private int checkRows (int rows) {
+        Scanner sc = new Scanner(System.in);
+
+        if (rows <= 0 && rows > this.numRows-1) {
+            System.out.println("Has d'introduir un número de files superior o igual a 0 e inferior a " + (this.numRows-1));
+            int answer = sc.nextInt();
+            return checkRows(answer);
+        }
+        return rows;
+    }
+
+    private int checkColumns (int column) {
+        Scanner sc = new Scanner(System.in);
+
+        if (column <= 0 && column > this.numColumns-1) {
+            System.out.println("Has d'introduir un número de columnes superior o igual a 0 e inferior a " + (this.numColumns-1));
+            int answer = sc.nextInt();
+            return checkColumns(answer);
+        }
+        return column;
+    }
+
+    private char checkAction (char action) {
+        Scanner sc = new Scanner(System.in);
+
+        if (action != 'd' && action != 'b') {
+            System.out.println("Has d'introduir la lletra 'd' per destapar o la lletra 'b' per posar una bandera (ambdues sense cometes)");
+            char answer = sc.next().charAt(0);
+            return checkAction(answer);
+        }
+        return action;
+    }
+
+    public void play() {
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println("Dim la fila de la casella que vols modificar:");
+        int row = sc.nextInt();
+        int checkedRow = checkRows(row);
+
+        System.out.println("Dim la columna de la casella que vols modificar");
+        int column = sc.nextInt();
+        int checkedColumn = checkColumns(column);
+
+        System.out.println("Dim si vols destapar (d) o posar una bandera (b)");
+        char action = sc.next().charAt(0);
+        char checkedAction = checkAction(action);
+
+        if (action == 'd') {
+            this.board[row][column].cover(false);
+            if (this.board[row][column].hasBomb()) {
+                this.board[row][column].setState(BoxRepresentation.BOMB);
+            } else {
+                if (this.board[row][column].getBombsAround() == 0) {
+                    this.board[row][column].setState(BoxRepresentation.ZERO);
+                }
+                if (this.board[row][column].getBombsAround() == 1) {
+                    this.board[row][column].setState(BoxRepresentation.ONE);
+                }
+                if (this.board[row][column].getBombsAround() == 2) {
+                    this.board[row][column].setState(BoxRepresentation.TWO);
+                }
+                if (this.board[row][column].getBombsAround() == 3) {
+                    this.board[row][column].setState(BoxRepresentation.THREE);
+                }
+                if (this.board[row][column].getBombsAround() == 4) {
+                    this.board[row][column].setState(BoxRepresentation.FOUR);
+                }
+                if (this.board[row][column].getBombsAround() == 5) {
+                    this.board[row][column].setState(BoxRepresentation.FIVE);
+                }
+                if (this.board[row][column].getBombsAround() == 6) {
+                    this.board[row][column].setState(BoxRepresentation.SIX);
+                }
+                if (this.board[row][column].getBombsAround() == 7) {
+                    this.board[row][column].setState(BoxRepresentation.SEVEN);
+                }
+                if (this.board[row][column].getBombsAround() == 8) {
+                    this.board[row][column].setState(BoxRepresentation.EIGHT);
+                }
+            }
+        }
+    }
 }

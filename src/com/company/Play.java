@@ -7,8 +7,8 @@ public class Play {
     private static int checkRows (int rows) {
         Scanner sc = new Scanner(System.in);
 
-        if (rows <= 0) {
-            System.out.println("Has d'introduir un número de files inferior o igual a 0");
+        if (rows <= 4) {
+            System.out.println("Has d'introduir un número de files superior o igual a 4");
             int answer = sc.nextInt();
             return checkRows(answer);
         }
@@ -18,8 +18,8 @@ public class Play {
     private static int checkColumns (int column) {
         Scanner sc = new Scanner(System.in);
 
-        if (column <= 0) {
-            System.out.println("Has d'introduir un número de columnes inferior o igual a 0");
+        if (column <= 4) {
+            System.out.println("Has d'introduir un número de columnes superior o igual a 4");
             int answer = sc.nextInt();
             return checkColumns(answer);
         }

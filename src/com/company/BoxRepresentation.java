@@ -1,18 +1,18 @@
 package com.company;
 
 public enum BoxRepresentation {
-    COVERED("#"),
-    FLAG("?"),
-    BOMB("X"),
-    ZERO("0"),
-    ONE("1"),
-    TWO("2"),
-    THREE("3"),
-    FOUR("4"),
-    FIVE("5"),
-    SIX("6"),
-    SEVEN("7"),
-    EIGHT("8");
+    COVERED(Color.WHITE + "#" + Color.RESET),
+    FLAG(Color.BLACK + "F" + Color.RESET),
+    BOMB(Color.RED + "X" + Color.RESET),
+    ZERO(Color.CYAN + "0" + Color.RESET),
+    ONE(Color.CYAN + "1" + Color.RESET),
+    TWO(Color.CYAN + "2" + Color.RESET),
+    THREE(Color.BLUE + "3" + Color.RESET),
+    FOUR(Color.BLUE + "4" + Color.RESET),
+    FIVE(Color.BLUE + "5" + Color.RESET),
+    SIX(Color.BLUE + "6" + Color.RESET),
+    SEVEN(Color.BLUE + "7" + Color.RESET),
+    EIGHT(Color.BLUE + "8" + Color.RESET);
 
     private String value;
 
@@ -23,4 +23,5 @@ public enum BoxRepresentation {
     public String getValue() {
         return value;
     }
+
 }
