@@ -625,33 +625,6 @@ public class Board {
                 printBoard();
                 System.out.println("Has perdut! LOSER");
             } else {
-                /*if (this.board[row][column].getBombsAround() == 0) {
-                    this.board[row][column].setState(BoxRepresentation.ZERO);
-                }
-                if (this.board[row][column].getBombsAround() == 1) {
-                    this.board[row][column].setState(BoxRepresentation.ONE);
-                }
-                if (this.board[row][column].getBombsAround() == 2) {
-                    this.board[row][column].setState(BoxRepresentation.TWO);
-                }
-                if (this.board[row][column].getBombsAround() == 3) {
-                    this.board[row][column].setState(BoxRepresentation.THREE);
-                }
-                if (this.board[row][column].getBombsAround() == 4) {
-                    this.board[row][column].setState(BoxRepresentation.FOUR);
-                }
-                if (this.board[row][column].getBombsAround() == 5) {
-                    this.board[row][column].setState(BoxRepresentation.FIVE);
-                }
-                if (this.board[row][column].getBombsAround() == 6) {
-                    this.board[row][column].setState(BoxRepresentation.SIX);
-                }
-                if (this.board[row][column].getBombsAround() == 7) {
-                    this.board[row][column].setState(BoxRepresentation.SEVEN);
-                }
-                if (this.board[row][column].getBombsAround() == 8) {
-                    this.board[row][column].setState(BoxRepresentation.EIGHT);
-                }*/
                 printBoard();
                 nextMove();
             }
