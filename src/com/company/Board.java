@@ -1,6 +1,5 @@
 package com.company;
 
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -36,7 +35,7 @@ public class Board {
         if (answerRow >= 0 && answerRow < this.getNumRows()) {
             return;
         } else {
-            System.out.println("Primera fila no vàlida, ha de ser un número entre 1 i " + this.getNumRows() + " ambdos inclosos");
+            System.out.println("Primera fila no vàlida, ha de ser un número entre 1 i " + (this.getNumRows()-1) + " ambdos inclosos");
             selectFirstRow();
         }
     }
@@ -45,7 +44,7 @@ public class Board {
         if (answerColumn >= 0 && answerColumn < this.getNumColumns()) {
             return;
         } else {
-            System.out.println("Primera columna no vàlida, ha de ser un número entre 1 i " + this.getNumColumns() + " ambdos inclosos");
+            System.out.println("Primera columna no vàlida, ha de ser un número entre 1 i " + (this.getNumColumns()-1) + " ambdos inclosos");
             selectFirstColumn();
         }
     }
@@ -79,20 +78,18 @@ public class Board {
 
         if (!this.board[randomRow][randomColumn].hasBomb() && this.board[randomRow][randomColumn].isCovered()) {
             //this.board[randomRow][randomColumn].setState(BoxRepresentation.BOMB);
-            this.board[randomRow][randomColumn].putBomb(true, this.board[randomRow][randomColumn]);
+            this.board[randomRow][randomColumn].putBomb(true);
         } else {
             createBomb(numberOfBombs-1);
         }
     }
 
     public void printBoard() {
+        System.out.println("    0    1    2    3    4    5    6    7");
         for (int i = 0; i < this.board.length; i++) {
+            System.out.print(i + " ");
             for (int j = 0; j < this.board[i].length; j++) {
-                //if (this.board[i][j].hasBomb()){
-                //    System.out.print(Color.RED + this.board[i][j].getState() + " " + Color.RESET);
-                //} else {
-                    System.out.print(this.board[i][j].getState());
-                //}
+                System.out.print(this.board[i][j].getState());
             }
             System.out.println();
         }
@@ -122,46 +119,75 @@ public class Board {
      */
 
     private void uncoverAroundFirstBox(int[] firstBoxPlace) {
-        Box upLeft = this.board[firstBoxPlace[0]-1][firstBoxPlace[1]-1];
+        /*Box upLeft = this.board[firstBoxPlace[0]-1][firstBoxPlace[1]-1];
         Box upCenter = this.board[firstBoxPlace[0]-1][firstBoxPlace[1]];
         Box upRight = this.board[firstBoxPlace[0]-1][firstBoxPlace[1]+1];
         Box left = this.board[firstBoxPlace[0]][firstBoxPlace[1]-1];
         Box right = this.board[firstBoxPlace[0]][firstBoxPlace[1]+1];
         Box downLeft = this.board[firstBoxPlace[0]+1][firstBoxPlace[1]-1];
         Box downCenter = this.board[firstBoxPlace[0]+1][firstBoxPlace[1]];
-        Box downRight = this.board[firstBoxPlace[0]+1][firstBoxPlace[1]+1];
+        Box downRight = this.board[firstBoxPlace[0]+1][firstBoxPlace[1]+1];*/
 
-        boolean cornerUpLeft = firstBoxPlace[0] == 0 && firstBoxPlace[1] == 0;
-        boolean borderLeft = firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] == 0;
-        boolean cornerDownLeft = firstBoxPlace[0] == this.numRows-1 && firstBoxPlace[1] == 0;
-        boolean borderUp = firstBoxPlace[0] == 0 && firstBoxPlace[1] > 0 && firstBoxPlace[1] < this.numColumns-1;
-        boolean center = firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] > 0 && firstBoxPlace[1] < this.numColumns-1;
-        boolean borderDown = firstBoxPlace[0] == this.numRows-1 && firstBoxPlace[1] > 0 && firstBoxPlace[1] < this.numColumns-1;
-        boolean cornerUpRight = firstBoxPlace[0] == 0 && firstBoxPlace[1] == this.numColumns-1;
-        boolean borderRight = firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] == this.numColumns-1;
-        boolean cornerDownRight = firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] == this.numColumns-1;
+        boolean cornerUpLeft = (firstBoxPlace[0] == 0 && firstBoxPlace[1] == 0);
+        boolean borderLeft = (firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] == 0);
+        boolean cornerDownLeft = (firstBoxPlace[0] == this.numRows-1 && firstBoxPlace[1] == 0);
+        boolean borderUp = (firstBoxPlace[0] == 0 && firstBoxPlace[1] > 0 && firstBoxPlace[1] < this.numColumns-1);
+        boolean center = (firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] > 0 && firstBoxPlace[1] < this.numColumns-1);
+        boolean borderDown = (firstBoxPlace[0] == this.numRows-1 && firstBoxPlace[1] > 0 && firstBoxPlace[1] < this.numColumns-1);
+        boolean cornerUpRight = (firstBoxPlace[0] == 0 && firstBoxPlace[1] == this.numColumns-1);
+        boolean borderRight = (firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] == this.numColumns-1);
+        boolean cornerDownRight = (firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] == this.numColumns-1);
 
-        if /* 1 */(cornerUpLeft) {
+        if /* 1 */ (cornerUpLeft) {
+            Box right = this.board[firstBoxPlace[0]][firstBoxPlace[1] + 1];
+            Box downCenter = this.board[firstBoxPlace[0] + 1][firstBoxPlace[1]];
+            Box downRight = this.board[firstBoxPlace[0] + 1][firstBoxPlace[1] + 1];
+
             right.cover(false);
             downCenter.cover(false);
             downRight.cover(false);
-        } else if /* 2 */(borderLeft){
+        } else if /* 2 */ (borderLeft) {
+            Box upCenter = this.board[firstBoxPlace[0] - 1][firstBoxPlace[1]];
+            Box upRight = this.board[firstBoxPlace[0] - 1][firstBoxPlace[1] + 1];
+            Box right = this.board[firstBoxPlace[0]][firstBoxPlace[1] + 1];
+            Box downCenter = this.board[firstBoxPlace[0] + 1][firstBoxPlace[1]];
+            Box downRight = this.board[firstBoxPlace[0] + 1][firstBoxPlace[1] + 1];
+
             upCenter.cover(false);
             upRight.cover(false);
             right.cover(false);
             downCenter.cover(false);
             downRight.cover(false);
-        } else if /* 3 */(cornerDownLeft) {
+        } else if /* 3 */ (cornerDownLeft) {
+            Box upCenter = this.board[firstBoxPlace[0] - 1][firstBoxPlace[1]];
+            Box upRight = this.board[firstBoxPlace[0] - 1][firstBoxPlace[1] + 1];
+            Box right = this.board[firstBoxPlace[0]][firstBoxPlace[1] + 1];
+
             upCenter.cover(false);
             upRight.cover(false);
             right.cover(false);
-        } else if /* 4 */(borderUp) {
+        } else if /* 4 */ (borderUp) {
+            Box left = this.board[firstBoxPlace[0]][firstBoxPlace[1] - 1];
+            Box right = this.board[firstBoxPlace[0]][firstBoxPlace[1] + 1];
+            Box downLeft = this.board[firstBoxPlace[0] + 1][firstBoxPlace[1] - 1];
+            Box downCenter = this.board[firstBoxPlace[0] + 1][firstBoxPlace[1]];
+            Box downRight = this.board[firstBoxPlace[0] + 1][firstBoxPlace[1] + 1];
+
             left.cover(false);
             downLeft.cover(false);
             downCenter.cover(false);
             downRight.cover(false);
             right.cover(false);
-        } else if /* 5 */(center) {
+        } else if /* 5 */ (center) {
+            Box upLeft = this.board[firstBoxPlace[0] - 1][firstBoxPlace[1] - 1];
+            Box upCenter = this.board[firstBoxPlace[0] - 1][firstBoxPlace[1]];
+            Box upRight = this.board[firstBoxPlace[0] - 1][firstBoxPlace[1] + 1];
+            Box left = this.board[firstBoxPlace[0]][firstBoxPlace[1] - 1];
+            Box right = this.board[firstBoxPlace[0]][firstBoxPlace[1] + 1];
+            Box downLeft = this.board[firstBoxPlace[0] + 1][firstBoxPlace[1] - 1];
+            Box downCenter = this.board[firstBoxPlace[0] + 1][firstBoxPlace[1]];
+            Box downRight = this.board[firstBoxPlace[0] + 1][firstBoxPlace[1] + 1];
+
             upLeft.cover(false);
             upCenter.cover(false);
             upRight.cover(false);
@@ -170,79 +196,185 @@ public class Board {
             downLeft.cover(false);
             downCenter.cover(false);
             downRight.cover(false);
-        } else if /* 6 */(borderDown) {
+        } else if /* 6 */ (borderDown) {
+            Box upLeft = this.board[firstBoxPlace[0] - 1][firstBoxPlace[1] - 1];
+            Box upCenter = this.board[firstBoxPlace[0] - 1][firstBoxPlace[1]];
+            Box upRight = this.board[firstBoxPlace[0] - 1][firstBoxPlace[1] + 1];
+            Box left = this.board[firstBoxPlace[0]][firstBoxPlace[1] - 1];
+            Box right = this.board[firstBoxPlace[0]][firstBoxPlace[1] + 1];
+
             upLeft.cover(false);
             upCenter.cover(false);
             upRight.cover(false);
             left.cover(false);
             right.cover(false);
-        } else if /* 7 */(cornerUpRight) {
+        } else if /* 7 */ (cornerUpRight) {
+            Box left = this.board[firstBoxPlace[0]][firstBoxPlace[1] - 1];
+            Box downLeft = this.board[firstBoxPlace[0] + 1][firstBoxPlace[1] - 1];
+            Box downCenter = this.board[firstBoxPlace[0] + 1][firstBoxPlace[1]];
+
             left.cover(false);
             downLeft.cover(false);
             downCenter.cover(false);
-        } else if /* 8 */(borderRight) {
+        } else if /* 8 */ (borderRight) {
+            Box upLeft = this.board[firstBoxPlace[0] - 1][firstBoxPlace[1] - 1];
+            Box upCenter = this.board[firstBoxPlace[0] - 1][firstBoxPlace[1]];
+            Box left = this.board[firstBoxPlace[0]][firstBoxPlace[1] - 1];
+            Box downLeft = this.board[firstBoxPlace[0] + 1][firstBoxPlace[1] - 1];
+            Box downCenter = this.board[firstBoxPlace[0] + 1][firstBoxPlace[1]];
+
             upLeft.cover(false);
             upCenter.cover(false);
             left.cover(false);
             downLeft.cover(false);
             downCenter.cover(false);
-        } else if /* 9 */(cornerDownRight) {
+        } else if /* 9 */ (cornerDownRight) {
+            Box upLeft = this.board[firstBoxPlace[0] - 1][firstBoxPlace[1] - 1];
+            Box upCenter = this.board[firstBoxPlace[0] - 1][firstBoxPlace[1]];
+            Box left = this.board[firstBoxPlace[0]][firstBoxPlace[1] - 1];
+
             upLeft.cover(false);
             upCenter.cover(false);
             left.cover(false);
         }
     }
 
-    private void uncoverAroundZero (int[] boxWithZero) {
-        if /* 1 */(boxWithZero[0] == 0 && boxWithZero[1] == 0) {
-            this.board[boxWithZero[0]][boxWithZero[1]+1].cover(false);
-            this.board[boxWithZero[0]+1][boxWithZero[1]].cover(false);
-            this.board[boxWithZero[0]+1][boxWithZero[1]+1].cover(false);
-        } else if /* 2 */(boxWithZero[0] > 0 && boxWithZero[0] < this.numRows-1 && boxWithZero[1] == 0){
-            this.board[boxWithZero[0]-1][boxWithZero[1]].cover(false);
-            this.board[boxWithZero[0]-1][boxWithZero[1]+1].cover(false);
-            this.board[boxWithZero[0]][boxWithZero[1]+1].cover(false);
-            this.board[boxWithZero[0]+1][boxWithZero[1]].cover(false);
-            this.board[boxWithZero[0]+1][boxWithZero[1]+1].cover(false);
-        } else if /* 3 */(boxWithZero[0] == this.numRows-1 && boxWithZero[1] == 0) {
-            this.board[boxWithZero[0]-1][boxWithZero[1]].cover(false);
-            this.board[boxWithZero[0]-1][boxWithZero[1]+1].cover(false);
-            this.board[boxWithZero[0]][boxWithZero[1]+1].cover(false);
-        } else if /* 4 */(boxWithZero[0] == 0 && boxWithZero[1] > 0 && boxWithZero[1] < this.numColumns-1) {
-            this.board[boxWithZero[0]][boxWithZero[1]-1].cover(false);
-            this.board[boxWithZero[0]][boxWithZero[1]+1].cover(false);
-            this.board[boxWithZero[0]+1][boxWithZero[1]-1].cover(false);
-            this.board[boxWithZero[0]+1][boxWithZero[1]].cover(false);
-            this.board[boxWithZero[0]+1][boxWithZero[1]+1].cover(false);
-        } else if /* 5 */(boxWithZero[0] > 0 && boxWithZero[0] < this.numRows-1 && boxWithZero[1] > 0 && boxWithZero[1] < this.numColumns-1) {
-            this.board[boxWithZero[0]-1][boxWithZero[1]-1].cover(false);
-            this.board[boxWithZero[0]-1][boxWithZero[1]].cover(false);
-            this.board[boxWithZero[0]-1][boxWithZero[1]+1].cover(false);
-            this.board[boxWithZero[0]][boxWithZero[1]-1].cover(false);
-            this.board[boxWithZero[0]][boxWithZero[1]+1].cover(false);
-            this.board[boxWithZero[0]+1][boxWithZero[1]-1].cover(false);
-            this.board[boxWithZero[0]+1][boxWithZero[1]].cover(false);
-            this.board[boxWithZero[0]+1][boxWithZero[1]+1].cover(false);
-        } else if /* 6 */(boxWithZero[0] == this.numRows-1 && boxWithZero[1] > 0 && boxWithZero[1] < this.numColumns-1) {
-            this.board[boxWithZero[0]-1][boxWithZero[1]-1].cover(false);
-            this.board[boxWithZero[0]-1][boxWithZero[1]].cover(false);
-            this.board[boxWithZero[0]-1][boxWithZero[1]+1].cover(false);
-            this.board[boxWithZero[0]][boxWithZero[1]-1].cover(false);
-            this.board[boxWithZero[0]][boxWithZero[1]+1].cover(false);
-        } else if /* 7 */(boxWithZero[0] == 0 && boxWithZero[1] == this.numColumns-1) {
-            this.board[boxWithZero[0]][boxWithZero[1]-1].cover(false);
-            this.board[boxWithZero[0]+1][boxWithZero[1]-1].cover(false);
-            this.board[boxWithZero[0]+1][boxWithZero[1]].cover(false);
-        } else if /* 8 */(boxWithZero[0] > 0 && boxWithZero[0] < this.numRows-1 && boxWithZero[1] == this.numColumns-1) {
-            this.board[boxWithZero[0]-1][boxWithZero[1]-1].cover(false);
-            this.board[boxWithZero[0]-1][boxWithZero[1]].cover(false);
-            this.board[boxWithZero[0]][boxWithZero[1]-1].cover(false);
-            this.board[boxWithZero[0]+1][boxWithZero[1]-1].cover(false);
-            this.board[boxWithZero[0]+1][boxWithZero[1]].cover(false);
-        } else if /* 9 */(boxWithZero[0] == this.numRows-1 && boxWithZero[1] == this.numColumns-1) {
-            this.board[boxWithZero[0]-1][boxWithZero[1]-1].cover(false);
-            this.board[boxWithZero[0]-1][boxWithZero[1]].cover(false);
-            this.board[boxWithZero[0]][boxWithZero[1]-1].cover(false);
+    private void uncoverAroundZero(int[] boxWithZero) {
+        /*Box upLeft = this.board[boxWithZero[0]-1][boxWithZero[1]-1];
+        Box upCenter = this.board[boxWithZero[0]-1][boxWithZero[1]];
+        Box upRight = this.board[boxWithZero[0]-1][boxWithZero[1]+1];
+        Box left = this.board[boxWithZero[0]][boxWithZero[1]-1];
+        Box right = this.board[boxWithZero[0]][boxWithZero[1]+1];
+        Box downLeft = this.board[boxWithZero[0]+1][boxWithZero[1]-1];
+        Box downCenter = this.board[boxWithZero[0]+1][boxWithZero[1]];
+        Box downRight = this.board[boxWithZero[0]+1][boxWithZero[1]+1];*/
+
+        boolean cornerUpLeft = boxWithZero[0] == 0 && boxWithZero[1] == 0;
+        boolean borderLeft = boxWithZero[0] > 0 && boxWithZero[0] < this.numRows-1 && boxWithZero[1] == 0;
+        boolean cornerDownLeft = boxWithZero[0] == this.numRows-1 && boxWithZero[1] == 0;
+        boolean borderUp = boxWithZero[0] == 0 && boxWithZero[1] > 0 && boxWithZero[1] < this.numColumns-1;
+        boolean center = boxWithZero[0] > 0 && boxWithZero[0] < this.numRows-1 && boxWithZero[1] > 0 && boxWithZero[1] < this.numColumns-1;
+        boolean borderDown = boxWithZero[0] == this.numRows-1 && boxWithZero[1] > 0 && boxWithZero[1] < this.numColumns-1;
+        boolean cornerUpRight = boxWithZero[0] == 0 && boxWithZero[1] == this.numColumns-1;
+        boolean borderRight = boxWithZero[0] > 0 && boxWithZero[0] < this.numRows-1 && boxWithZero[1] == this.numColumns-1;
+        boolean cornerDownRight = boxWithZero[0] > 0 && boxWithZero[0] < this.numRows-1 && boxWithZero[1] == this.numColumns-1;
+
+        if (this.board[boxWithZero[0]][boxWithZero[1]].getBombsAround() == 0) {
+            if /* 1 */(cornerUpLeft) {
+                Box right = this.board[boxWithZero[0]][boxWithZero[1]+1];
+                Box downCenter = this.board[boxWithZero[0]+1][boxWithZero[1]];
+                Box downRight = this.board[boxWithZero[0]+1][boxWithZero[1]+1];
+
+                right.cover(false);
+                downCenter.cover(false);
+                downRight.cover(false);
+            } else if /* 2 */(borderLeft){
+                Box upCenter = this.board[boxWithZero[0]-1][boxWithZero[1]];
+                Box upRight = this.board[boxWithZero[0]-1][boxWithZero[1]+1];
+                Box right = this.board[boxWithZero[0]][boxWithZero[1]+1];
+                Box downCenter = this.board[boxWithZero[0]+1][boxWithZero[1]];
+                Box downRight = this.board[boxWithZero[0]+1][boxWithZero[1]+1];
+
+                upCenter.cover(false);
+                upRight.cover(false);
+                right.cover(false);
+                downCenter.cover(false);
+                downRight.cover(false);
+            } else if /* 3 */(cornerDownLeft) {
+                Box upCenter = this.board[boxWithZero[0]-1][boxWithZero[1]];
+                Box upRight = this.board[boxWithZero[0]-1][boxWithZero[1]+1];
+                Box right = this.board[boxWithZero[0]][boxWithZero[1]+1];
+
+                upCenter.cover(false);
+                upRight.cover(false);
+                right.cover(false);
+            } else if /* 4 */(borderUp) {
+                Box left = this.board[boxWithZero[0]][boxWithZero[1]-1];
+                Box right = this.board[boxWithZero[0]][boxWithZero[1]+1];
+                Box downLeft = this.board[boxWithZero[0]+1][boxWithZero[1]-1];
+                Box downCenter = this.board[boxWithZero[0]+1][boxWithZero[1]];
+                Box downRight = this.board[boxWithZero[0]+1][boxWithZero[1]+1];
+
+                left.cover(false);
+                right.cover(false);
+                downLeft.cover(false);
+                downCenter.cover(false);
+                downRight.cover(false);
+            } else if /* 5 */(center) {
+                Box upLeft = this.board[boxWithZero[0]-1][boxWithZero[1]-1];
+                Box upCenter = this.board[boxWithZero[0]-1][boxWithZero[1]];
+                Box upRight = this.board[boxWithZero[0]-1][boxWithZero[1]+1];
+                Box left = this.board[boxWithZero[0]][boxWithZero[1]-1];
+                Box right = this.board[boxWithZero[0]][boxWithZero[1]+1];
+                Box downLeft = this.board[boxWithZero[0]+1][boxWithZero[1]-1];
+                Box downCenter = this.board[boxWithZero[0]+1][boxWithZero[1]];
+                Box downRight = this.board[boxWithZero[0]+1][boxWithZero[1]+1];
+
+                upLeft.cover(false);
+                upCenter.cover(false);
+                upRight.cover(false);
+                left.cover(false);
+                right.cover(false);
+                downLeft.cover(false);
+                downCenter.cover(false);
+                downRight.cover(false);
+            } else if /* 6 */(borderDown) {
+                Box upLeft = this.board[boxWithZero[0]-1][boxWithZero[1]-1];
+                Box upCenter = this.board[boxWithZero[0]-1][boxWithZero[1]];
+                Box upRight = this.board[boxWithZero[0]-1][boxWithZero[1]+1];
+                Box left = this.board[boxWithZero[0]][boxWithZero[1]-1];
+                Box right = this.board[boxWithZero[0]][boxWithZero[1]+1];
+
+                upLeft.cover(false);
+                upCenter.cover(false);
+                upRight.cover(false);
+                left.cover(false);
+                right.cover(false);
+            } else if /* 7 */(cornerUpRight) {
+                Box left = this.board[boxWithZero[0]][boxWithZero[1]-1];
+                Box downLeft = this.board[boxWithZero[0]+1][boxWithZero[1]-1];
+                Box downCenter = this.board[boxWithZero[0]+1][boxWithZero[1]];
+
+                left.cover(false);
+                downLeft.cover(false);
+                downCenter.cover(false);
+            } else if /* 8 */(borderRight) {
+                Box upLeft = this.board[boxWithZero[0]-1][boxWithZero[1]-1];
+                Box upCenter = this.board[boxWithZero[0]-1][boxWithZero[1]];
+                Box left = this.board[boxWithZero[0]][boxWithZero[1]-1];
+                Box downLeft = this.board[boxWithZero[0]+1][boxWithZero[1]-1];
+                Box downCenter = this.board[boxWithZero[0]+1][boxWithZero[1]];
+
+                upLeft.cover(false);
+                upCenter.cover(false);
+                left.cover(false);
+                downLeft.cover(false);
+                downCenter.cover(false);
+            } else if /* 9 */(cornerDownRight) {
+                Box upLeft = this.board[boxWithZero[0]-1][boxWithZero[1]-1];
+                Box upCenter = this.board[boxWithZero[0]-1][boxWithZero[1]];
+                Box left = this.board[boxWithZero[0]][boxWithZero[1]-1];
+
+                upLeft.cover(false);
+                upCenter.cover(false);
+                left.cover(false);
+            }
+        }
+    }
+
+    private void uncoverAllAroundZero(int trys) {
+        if (trys > 0) {
+            for (int row = 0; row < this.board.length; row++) {
+                for( int column = 0; column < this.board[row].length; column++) {
+                    if(!this.board[row][column].isCovered()) {
+                        int[] position = {row, column};
+                        uncoverAroundZero(position);
+                    }
+                }
+            }
+            uncoverAllAroundZero(trys-1);
+        } else {
+            return;
         }
     }
 
@@ -423,6 +555,8 @@ public class Board {
             }
         }
 
+        uncoverAllAroundZero(this.numRows);
+
         printBoard();
     }
 
@@ -448,6 +582,14 @@ public class Board {
         return column;
     }
 
+    private int [] checkBox (int [] box) {
+        if (!this.board[box[0]][box[1]].isCovered()) {
+            System.out.println("Has fet una acció amb una casella destapada, torna a introduir la fila i la columna");
+            nextMove();
+        }
+        return box;
+    }
+
     private char checkAction (char action) {
         Scanner sc = new Scanner(System.in);
 
@@ -459,7 +601,7 @@ public class Board {
         return action;
     }
 
-    public void play() {
+    public void nextMove() {
         Scanner sc = new Scanner(System.in);
 
         System.out.println("Dim la fila de la casella que vols modificar:");
@@ -470,16 +612,20 @@ public class Board {
         int column = sc.nextInt();
         int checkedColumn = checkColumns(column);
 
+        int [] box = {checkedRow, checkedColumn};
+        int [] checkedBox = checkBox(box);
+
         System.out.println("Dim si vols destapar (d) o posar una bandera (b)");
         char action = sc.next().charAt(0);
         char checkedAction = checkAction(action);
 
-        if (action == 'd') {
-            this.board[row][column].cover(false);
-            if (this.board[row][column].hasBomb()) {
-                this.board[row][column].setState(BoxRepresentation.BOMB);
+        if (checkedAction == 'd') {
+            this.board[checkedBox[0]][checkedBox[1]].cover(false);
+            if (this.board[checkedBox[0]][checkedBox[1]].hasBomb()) {
+                printBoard();
+                System.out.println("Has perdut! LOSER");
             } else {
-                if (this.board[row][column].getBombsAround() == 0) {
+                /*if (this.board[row][column].getBombsAround() == 0) {
                     this.board[row][column].setState(BoxRepresentation.ZERO);
                 }
                 if (this.board[row][column].getBombsAround() == 1) {
@@ -505,8 +651,15 @@ public class Board {
                 }
                 if (this.board[row][column].getBombsAround() == 8) {
                     this.board[row][column].setState(BoxRepresentation.EIGHT);
-                }
+                }*/
+                printBoard();
+                nextMove();
             }
+        }
+        if (checkedAction == 'b'){
+            this.board[checkedBox[0]][checkedBox[1]].putFlag(true);
+            printBoard();
+            nextMove();
         }
     }
 }

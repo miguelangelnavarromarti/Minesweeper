@@ -51,12 +51,12 @@ public class Box {
         putRepresentation();
     }
 
-    public void putFlag(boolean flag, Box box) {
+    public void putFlag(boolean flag) {
         this.flag = flag;
         putRepresentation();
     }
 
-    public void putBomb(boolean bomb, Box box) {
+    public void putBomb(boolean bomb) {
         this.bomb = bomb;
         putRepresentation();
     }

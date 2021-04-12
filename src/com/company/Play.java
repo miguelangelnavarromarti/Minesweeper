@@ -40,7 +40,7 @@ public class Play {
     public static void menu() {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Benvingut al Buscaminas! \n" +
+        System.out.println("Benvingut al 'Buscaminas'! \n" +
                 "\n" +
                 "Tenim les següents opcións: \n" +
                 "1. Principiant (8x8) amb 10 mines.\n" +
@@ -63,6 +63,7 @@ public class Play {
                 principiant.printBoard();
                 int[] firstBox = principiant.selectFirstBox();
                 principiant.printBoardFirstMove(10, firstBox);
+                principiant.nextMove();
                 break;
             case 2:
                 Board normal = new Board (16, 16);

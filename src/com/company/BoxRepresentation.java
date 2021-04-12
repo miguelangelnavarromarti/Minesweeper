@@ -2,7 +2,7 @@ package com.company;
 
 public enum BoxRepresentation {
     COVERED("[ " + Color.WHITE + "#" + Color.RESET + " ]"),
-    FLAG("[ " + Color.BLACK + "F" + Color.RESET + " ]"),
+    FLAG("[ " + Color.YELLOW + "B" + Color.RESET + " ]"),
     BOMB("[ " + Color.RED + "X" + Color.RESET + " ]"),
     ZERO("[ " + Color.CYAN + "0" + Color.RESET + " ]"),
     ONE("[ " + Color.CYAN + "1" + Color.RESET + " ]"),
