@@ -79,7 +79,7 @@ public class Board {
 
         if (!this.board[randomRow][randomColumn].hasBomb() && this.board[randomRow][randomColumn].isCovered()) {
             //this.board[randomRow][randomColumn].setState(BoxRepresentation.BOMB);
-            this.board[randomRow][randomColumn].putBomb(true);
+            this.board[randomRow][randomColumn].putBomb(true, this.board[randomRow][randomColumn]);
         } else {
             createBomb(numberOfBombs-1);
         }
@@ -91,7 +91,7 @@ public class Board {
                 //if (this.board[i][j].hasBomb()){
                 //    System.out.print(Color.RED + this.board[i][j].getState() + " " + Color.RESET);
                 //} else {
-                    System.out.print(this.board[i][j].getState() + " ");
+                    System.out.print(this.board[i][j].getState());
                 //}
             }
             System.out.println();
@@ -122,56 +122,127 @@ public class Board {
      */
 
     private void uncoverAroundFirstBox(int[] firstBoxPlace) {
+        Box upLeft = this.board[firstBoxPlace[0]-1][firstBoxPlace[1]-1];
+        Box upCenter = this.board[firstBoxPlace[0]-1][firstBoxPlace[1]];
+        Box upRight = this.board[firstBoxPlace[0]-1][firstBoxPlace[1]+1];
+        Box left = this.board[firstBoxPlace[0]][firstBoxPlace[1]-1];
+        Box right = this.board[firstBoxPlace[0]][firstBoxPlace[1]+1];
+        Box downLeft = this.board[firstBoxPlace[0]+1][firstBoxPlace[1]-1];
+        Box downCenter = this.board[firstBoxPlace[0]+1][firstBoxPlace[1]];
+        Box downRight = this.board[firstBoxPlace[0]+1][firstBoxPlace[1]+1];
 
-        if /* 1 */(firstBoxPlace[0] == 0 && firstBoxPlace[1] == 0) {
-            this.board[firstBoxPlace[0]][firstBoxPlace[1]+1].cover(false);
-            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]].cover(false);
-            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]+1].cover(false);
-        } else if /* 2 */(firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] == 0){
-            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]].cover(false);
-            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]+1].cover(false);
-            this.board[firstBoxPlace[0]][firstBoxPlace[1]+1].cover(false);
-            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]].cover(false);
-            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]+1].cover(false);
-        } else if /* 3 */(firstBoxPlace[0] == this.numRows-1 && firstBoxPlace[1] == 0) {
-            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]].cover(false);
-            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]+1].cover(false);
-            this.board[firstBoxPlace[0]][firstBoxPlace[1]+1].cover(false);
-        } else if /* 4 */(firstBoxPlace[0] == 0 && firstBoxPlace[1] > 0 && firstBoxPlace[1] < this.numColumns-1) {
-            this.board[firstBoxPlace[0]][firstBoxPlace[1]-1].cover(false);
-            this.board[firstBoxPlace[0]][firstBoxPlace[1]+1].cover(false);
-            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]-1].cover(false);
-            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]].cover(false);
-            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]+1].cover(false);
-        } else if /* 5 */(firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] > 0 && firstBoxPlace[1] < this.numColumns-1) {
-            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]-1].cover(false);
-            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]].cover(false);
-            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]+1].cover(false);
-            this.board[firstBoxPlace[0]][firstBoxPlace[1]-1].cover(false);
-            this.board[firstBoxPlace[0]][firstBoxPlace[1]+1].cover(false);
-            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]-1].cover(false);
-            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]].cover(false);
-            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]+1].cover(false);
-        } else if /* 6 */(firstBoxPlace[0] == this.numRows-1 && firstBoxPlace[1] > 0 && firstBoxPlace[1] < this.numColumns-1) {
-            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]-1].cover(false);
-            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]].cover(false);
-            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]+1].cover(false);
-            this.board[firstBoxPlace[0]][firstBoxPlace[1]-1].cover(false);
-            this.board[firstBoxPlace[0]][firstBoxPlace[1]+1].cover(false);
-        } else if /* 7 */(firstBoxPlace[0] == 0 && firstBoxPlace[1] == this.numColumns-1) {
-            this.board[firstBoxPlace[0]][firstBoxPlace[1]-1].cover(false);
-            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]-1].cover(false);
-            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]].cover(false);
-        } else if /* 8 */(firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] == this.numColumns-1) {
-            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]-1].cover(false);
-            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]].cover(false);
-            this.board[firstBoxPlace[0]][firstBoxPlace[1]-1].cover(false);
-            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]-1].cover(false);
-            this.board[firstBoxPlace[0]+1][firstBoxPlace[1]].cover(false);
-        } else if /* 9 */(firstBoxPlace[0] == this.numRows-1 && firstBoxPlace[1] == this.numColumns-1) {
-            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]-1].cover(false);
-            this.board[firstBoxPlace[0]-1][firstBoxPlace[1]].cover(false);
-            this.board[firstBoxPlace[0]][firstBoxPlace[1]-1].cover(false);
+        boolean cornerUpLeft = firstBoxPlace[0] == 0 && firstBoxPlace[1] == 0;
+        boolean borderLeft = firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] == 0;
+        boolean cornerDownLeft = firstBoxPlace[0] == this.numRows-1 && firstBoxPlace[1] == 0;
+        boolean borderUp = firstBoxPlace[0] == 0 && firstBoxPlace[1] > 0 && firstBoxPlace[1] < this.numColumns-1;
+        boolean center = firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] > 0 && firstBoxPlace[1] < this.numColumns-1;
+        boolean borderDown = firstBoxPlace[0] == this.numRows-1 && firstBoxPlace[1] > 0 && firstBoxPlace[1] < this.numColumns-1;
+        boolean cornerUpRight = firstBoxPlace[0] == 0 && firstBoxPlace[1] == this.numColumns-1;
+        boolean borderRight = firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] == this.numColumns-1;
+        boolean cornerDownRight = firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] == this.numColumns-1;
+
+        if /* 1 */(cornerUpLeft) {
+            right.cover(false);
+            downCenter.cover(false);
+            downRight.cover(false);
+        } else if /* 2 */(borderLeft){
+            upCenter.cover(false);
+            upRight.cover(false);
+            right.cover(false);
+            downCenter.cover(false);
+            downRight.cover(false);
+        } else if /* 3 */(cornerDownLeft) {
+            upCenter.cover(false);
+            upRight.cover(false);
+            right.cover(false);
+        } else if /* 4 */(borderUp) {
+            left.cover(false);
+            downLeft.cover(false);
+            downCenter.cover(false);
+            downRight.cover(false);
+            right.cover(false);
+        } else if /* 5 */(center) {
+            upLeft.cover(false);
+            upCenter.cover(false);
+            upRight.cover(false);
+            left.cover(false);
+            right.cover(false);
+            downLeft.cover(false);
+            downCenter.cover(false);
+            downRight.cover(false);
+        } else if /* 6 */(borderDown) {
+            upLeft.cover(false);
+            upCenter.cover(false);
+            upRight.cover(false);
+            left.cover(false);
+            right.cover(false);
+        } else if /* 7 */(cornerUpRight) {
+            left.cover(false);
+            downLeft.cover(false);
+            downCenter.cover(false);
+        } else if /* 8 */(borderRight) {
+            upLeft.cover(false);
+            upCenter.cover(false);
+            left.cover(false);
+            downLeft.cover(false);
+            downCenter.cover(false);
+        } else if /* 9 */(cornerDownRight) {
+            upLeft.cover(false);
+            upCenter.cover(false);
+            left.cover(false);
+        }
+    }
+
+    private void uncoverAroundZero (int[] boxWithZero) {
+        if /* 1 */(boxWithZero[0] == 0 && boxWithZero[1] == 0) {
+            this.board[boxWithZero[0]][boxWithZero[1]+1].cover(false);
+            this.board[boxWithZero[0]+1][boxWithZero[1]].cover(false);
+            this.board[boxWithZero[0]+1][boxWithZero[1]+1].cover(false);
+        } else if /* 2 */(boxWithZero[0] > 0 && boxWithZero[0] < this.numRows-1 && boxWithZero[1] == 0){
+            this.board[boxWithZero[0]-1][boxWithZero[1]].cover(false);
+            this.board[boxWithZero[0]-1][boxWithZero[1]+1].cover(false);
+            this.board[boxWithZero[0]][boxWithZero[1]+1].cover(false);
+            this.board[boxWithZero[0]+1][boxWithZero[1]].cover(false);
+            this.board[boxWithZero[0]+1][boxWithZero[1]+1].cover(false);
+        } else if /* 3 */(boxWithZero[0] == this.numRows-1 && boxWithZero[1] == 0) {
+            this.board[boxWithZero[0]-1][boxWithZero[1]].cover(false);
+            this.board[boxWithZero[0]-1][boxWithZero[1]+1].cover(false);
+            this.board[boxWithZero[0]][boxWithZero[1]+1].cover(false);
+        } else if /* 4 */(boxWithZero[0] == 0 && boxWithZero[1] > 0 && boxWithZero[1] < this.numColumns-1) {
+            this.board[boxWithZero[0]][boxWithZero[1]-1].cover(false);
+            this.board[boxWithZero[0]][boxWithZero[1]+1].cover(false);
+            this.board[boxWithZero[0]+1][boxWithZero[1]-1].cover(false);
+            this.board[boxWithZero[0]+1][boxWithZero[1]].cover(false);
+            this.board[boxWithZero[0]+1][boxWithZero[1]+1].cover(false);
+        } else if /* 5 */(boxWithZero[0] > 0 && boxWithZero[0] < this.numRows-1 && boxWithZero[1] > 0 && boxWithZero[1] < this.numColumns-1) {
+            this.board[boxWithZero[0]-1][boxWithZero[1]-1].cover(false);
+            this.board[boxWithZero[0]-1][boxWithZero[1]].cover(false);
+            this.board[boxWithZero[0]-1][boxWithZero[1]+1].cover(false);
+            this.board[boxWithZero[0]][boxWithZero[1]-1].cover(false);
+            this.board[boxWithZero[0]][boxWithZero[1]+1].cover(false);
+            this.board[boxWithZero[0]+1][boxWithZero[1]-1].cover(false);
+            this.board[boxWithZero[0]+1][boxWithZero[1]].cover(false);
+            this.board[boxWithZero[0]+1][boxWithZero[1]+1].cover(false);
+        } else if /* 6 */(boxWithZero[0] == this.numRows-1 && boxWithZero[1] > 0 && boxWithZero[1] < this.numColumns-1) {
+            this.board[boxWithZero[0]-1][boxWithZero[1]-1].cover(false);
+            this.board[boxWithZero[0]-1][boxWithZero[1]].cover(false);
+            this.board[boxWithZero[0]-1][boxWithZero[1]+1].cover(false);
+            this.board[boxWithZero[0]][boxWithZero[1]-1].cover(false);
+            this.board[boxWithZero[0]][boxWithZero[1]+1].cover(false);
+        } else if /* 7 */(boxWithZero[0] == 0 && boxWithZero[1] == this.numColumns-1) {
+            this.board[boxWithZero[0]][boxWithZero[1]-1].cover(false);
+            this.board[boxWithZero[0]+1][boxWithZero[1]-1].cover(false);
+            this.board[boxWithZero[0]+1][boxWithZero[1]].cover(false);
+        } else if /* 8 */(boxWithZero[0] > 0 && boxWithZero[0] < this.numRows-1 && boxWithZero[1] == this.numColumns-1) {
+            this.board[boxWithZero[0]-1][boxWithZero[1]-1].cover(false);
+            this.board[boxWithZero[0]-1][boxWithZero[1]].cover(false);
+            this.board[boxWithZero[0]][boxWithZero[1]-1].cover(false);
+            this.board[boxWithZero[0]+1][boxWithZero[1]-1].cover(false);
+            this.board[boxWithZero[0]+1][boxWithZero[1]].cover(false);
+        } else if /* 9 */(boxWithZero[0] == this.numRows-1 && boxWithZero[1] == this.numColumns-1) {
+            this.board[boxWithZero[0]-1][boxWithZero[1]-1].cover(false);
+            this.board[boxWithZero[0]-1][boxWithZero[1]].cover(false);
+            this.board[boxWithZero[0]][boxWithZero[1]-1].cover(false);
         }
     }
 
@@ -354,12 +425,6 @@ public class Board {
 
         printBoard();
     }
-
-    // FUNCIONALITAT POSAR BOMBES I DIR SES BOMBES QUE HI HA AL VOLTANT, CONTROLADA
-    /**
-     * Tapar taulell
-     * Demanar següent Box i quin tipo d'acció
-     */
 
     private int checkRows (int rows) {
         Scanner sc = new Scanner(System.in);
