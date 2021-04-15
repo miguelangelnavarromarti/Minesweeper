@@ -54,7 +54,7 @@ public class Board {
 
         int answerRow;
         do {
-            System.out.println("Selecciona la primera fila:");
+            System.out.println("\nSelecciona la primera fila:");
             while (!sc.hasNextInt()) {
                 System.out.println("Això no es un número! Tria un número");
                 sc.next();
@@ -126,6 +126,35 @@ public class Board {
             }
             System.out.println();
         }
+        System.out.println("Te queden " + flagsLeft() + " banderes per col·locar");
+    }
+
+    private int numberOfBombs () {
+
+        int bombs = 0;
+
+        for (int i = 0; i < this.board.length; i++) {
+            for (int j = 0; j < this.board[i].length; j++) {
+                if (this.board[i][j].hasBomb()) {
+                    bombs++;
+                }
+            }
+        }
+        return bombs;
+    }
+
+    private int flagsLeft() {
+
+        int flagsLeft = numberOfBombs();
+
+        for (int i = 0; i < this.board.length; i++) {
+            for (int j = 0; j < this.board[i].length; j++) {
+                if (this.board[i][j].hasFlag()) {
+                    flagsLeft--;
+                }
+            }
+        }
+        return flagsLeft;
     }
 
     public int[] selectFirstBox(){
@@ -711,11 +740,16 @@ public class Board {
             }
         }
         if (checkedAction == 'b'){
-            if (!this.board[checkedBox[0]][checkedBox[1]].hasFlag()) {
-                this.board[checkedBox[0]][checkedBox[1]].putFlag(true);
+            if (flagsLeft() == 0) {
+                System.out.println("No pots posar més banderes.");
             } else {
-                this.board[checkedBox[0]][checkedBox[1]].putFlag(false);
+                if (!this.board[checkedBox[0]][checkedBox[1]].hasFlag()) {
+                    this.board[checkedBox[0]][checkedBox[1]].putFlag(true);
+                } else {
+                    this.board[checkedBox[0]][checkedBox[1]].putFlag(false);
+                }
             }
+
             printBoard();
             nextMove();
         }
