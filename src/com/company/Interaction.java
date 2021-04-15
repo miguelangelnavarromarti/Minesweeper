@@ -1,4 +1,4 @@
-package com.company;
+package src.com.company;
 
 import java.util.Scanner;
 
@@ -24,28 +24,33 @@ public class Interaction {
         Scanner sc = new Scanner(System.in);
 
         int[] answer = new int[2];
+        int answerRow;
+        int answerColumn;
 
-        System.out.println("Selecciona la casella. \n" +
-                "Fila: ");
+        System.out.println("Selecciona la casella.");
 
-        int answerRow = sc.nextInt();
+        do {
+            System.out.println("Fila:");
+            while (!sc.hasNextInt()) {
+                System.out.println("Això no es un número! Tria un número");
+                sc.next();
+            }
+            answerRow = sc.nextInt();
+        } while (answerRow <= 0);
+
         answer[0] = answerRow;
 
-        //while (checkSelectColumn(answerRow, tablero))
+        do {
+            System.out.println("Columna:");
+            while (!sc.hasNextInt()) {
+                System.out.println("Això no es un número! Tria un número");
+                sc.next();
+            }
+            answerColumn = sc.nextInt();
+        } while (answerColumn <= 0);
 
-        System.out.println("Columna: ");
-
-        int answerColumn = sc.nextInt();
         answer[1] = answerColumn;
 
         return answer;
     }
-
-    /*public static int[] selectAction() {
-        Scanner sc = new Scanner(System.in);
-
-        int[]
-    }*/
-
-
 }

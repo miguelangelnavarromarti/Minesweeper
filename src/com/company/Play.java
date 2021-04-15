@@ -1,4 +1,4 @@
-package com.company;
+package src.com.company;
 
 import java.util.Scanner;
 
@@ -40,42 +40,56 @@ public class Play {
     public static void menu() {
         Scanner sc = new Scanner(System.in);
 
+        int opcio;
+
         System.out.println("Benvingut al 'Buscaminas'! \n" +
                 "\n" +
-                "Tenim les següents opcións: \n" +
+                "Tenim les següents opcions: \n" +
                 "1. Principiant (8x8) amb 10 mines.\n" +
                 "2. Normal (16x16) amb 40 mines.\n" +
                 "3. Difícil (16x30) amb 99 mines. \n" +
-                "4. Personalitzat. L'usuari tria la mida del taulell i el número de mines amb les que vol jugar \n" +
+                "4. Personalitzat. Tria la mida del taulell i el número de mines amb les que vols jugar. \n" +
                 "5. Rècords. \n" +
-                "6. Surt. \n\n" +
-                "Quina selecciones?");
+                "6. Surt. \n");
 
-        start(sc.nextInt());
+        do {
+            System.out.println("Quina selecciones?");
+            while (!sc.hasNextInt()) {
+                System.out.println("Això no es un número! Tria un número");
+                sc.next();
+            }
+            opcio = sc.nextInt();
+        } while (opcio < 0);
+
+        start(opcio);
     }
 
     private static void start(int answer) {
         Scanner sc = new Scanner(System.in);
 
+        int[] firstBox;
+
         switch (answer) {
             case 1:
                 Board principiant = new Board(8, 8);
                 principiant.printBoard();
-                int[] firstBox = principiant.selectFirstBox();
+                firstBox = principiant.selectFirstBox();
                 principiant.printBoardFirstMove(10, firstBox);
                 principiant.nextMove();
                 break;
             case 2:
                 Board normal = new Board (16, 16);
                 normal.printBoard();
-
-                //normal.printBoardFirstMove(40);
+                firstBox = normal.selectFirstBox();
+                normal.printBoardFirstMove(40, firstBox);
+                normal.nextMove();
                 break;
             case 3:
                 Board dificil = new Board (16, 32);
                 dificil.printBoard();
-
-                //dificil.printBoardFirstMove(99);
+                firstBox = dificil.selectFirstBox();
+                dificil.printBoardFirstMove(99, firstBox);
+                dificil.nextMove();
                 break;
             case 4:
                 // Comprova les files
@@ -97,8 +111,9 @@ public class Play {
                 //Aquí cream el taulell (sense bombes)
                 personalitzat.printBoard();
 
-                //Aquí cream el taulell amb bombes
-                //personalitzat.printBoardFirstMove(checkedBombs);
+                firstBox = personalitzat.selectFirstBox();
+                personalitzat.printBoardFirstMove(checkedBombs, firstBox);
+                personalitzat.nextMove();
                 break;
             case 5:
                 // Falta afegir tota la funcionalitat
@@ -107,8 +122,8 @@ public class Play {
                 System.out.println("Gràcies per jugar al Buscaminas");
             default:
                 System.out.println("La opció introduida no existeix. \n");
-                menu();
                 break;
         }
+        menu();
     }
 }

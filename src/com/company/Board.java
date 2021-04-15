@@ -1,4 +1,4 @@
-package com.company;
+package src.com.company;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -35,7 +35,7 @@ public class Board {
         if (answerRow >= 0 && answerRow < this.getNumRows()) {
             return;
         } else {
-            System.out.println("Primera fila no vàlida, ha de ser un número entre 1 i " + (this.getNumRows()-1) + " ambdos inclosos");
+            System.out.println("\nPrimera fila no vàlida, ha de ser un número entre 1 i " + (this.getNumRows()-1) + " ambdos inclosos");
             selectFirstRow();
         }
     }
@@ -52,8 +52,15 @@ public class Board {
     private int selectFirstRow() {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Selecciona la primera fila: ");
-        int answerRow = sc.nextInt();
+        int answerRow;
+        do {
+            System.out.println("Selecciona la primera fila:");
+            while (!sc.hasNextInt()) {
+                System.out.println("Això no es un número! Tria un número");
+                sc.next();
+            }
+            answerRow = sc.nextInt();
+        } while (answerRow < 0);
         checkFirstRow(answerRow);
         return answerRow;
     }
@@ -61,8 +68,16 @@ public class Board {
     private int selectFirstColumn() {
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Selecciona la primera columna: ");
-        int answerColumn = sc.nextInt();
+        int answerColumn;
+
+        do {
+            System.out.println("Selecciona la primera columna:");
+            while (!sc.hasNextInt()) {
+                System.out.println("Això no es un número! Tria un número");
+                sc.next();
+            }
+            answerColumn = sc.nextInt();
+        } while (answerColumn < 0);
         checkFirstColumn(answerColumn);
         return answerColumn;
     }
@@ -85,9 +100,27 @@ public class Board {
     }
 
     public void printBoard() {
-        System.out.println("    0    1    2    3    4    5    6    7");
+
+        for (int i = 0; i < this.numColumns; i++) {
+            if (i == 0) {
+                System.out.print("     " + i + "  ");
+            } else {
+                if (i < 10) {
+                    System.out.print("  " + i + "  ");
+                } else {
+                    System.out.print("  " + i + " ");
+                }
+            }
+        }
+
+        System.out.println("");
+
         for (int i = 0; i < this.board.length; i++) {
-            System.out.print(i + " ");
+            if (i < 10) {
+                System.out.print(" " + i + " ");
+            } else {
+                System.out.print(i + " ");
+            }
             for (int j = 0; j < this.board[i].length; j++) {
                 System.out.print(this.board[i][j].getState());
             }
@@ -563,9 +596,20 @@ public class Board {
     private int checkRows (int rows) {
         Scanner sc = new Scanner(System.in);
 
+        int answer;
+
         if (rows <= 0 && rows > this.numRows-1) {
             System.out.println("Has d'introduir un número de files superior o igual a 0 e inferior a " + (this.numRows-1));
-            int answer = sc.nextInt();
+
+            do {
+                System.out.println("Has d'introduir un número de files superior o igual a 0 e inferior a " + (this.numRows-1));
+                while (!sc.hasNextInt()) {
+                    System.out.println("Això no es un número! Tria un número");
+                    sc.next();
+                }
+                answer = sc.nextInt();
+            } while (answer <= 0);
+
             return checkRows(answer);
         }
         return rows;
@@ -584,7 +628,7 @@ public class Board {
 
     private int [] checkBox (int [] box) {
         if (!this.board[box[0]][box[1]].isCovered()) {
-            System.out.println("Has fet una acció amb una casella destapada, torna a introduir la fila i la columna");
+            System.out.println("Has intentat fer una acció amb una casella destapada, torna a introduir la fila i la columna");
             nextMove();
         }
         return box;
@@ -601,15 +645,51 @@ public class Board {
         return action;
     }
 
+    private boolean checkWin () {
+
+
+
+        for (int i = 0; i < this.board.length; i++) {
+            for (int j = 0; j < this.board[i].length; j++) {
+                if (this.board[i][j].isCovered() && !this.board[i][j].hasBomb()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public void nextMove() {
+
+        int row;
+        int column;
+
+        if (checkWin()) {
+            System.out.println("\n" + "You WIN" + "\n");
+            return;
+        }
+
         Scanner sc = new Scanner(System.in);
 
-        System.out.println("Dim la fila de la casella que vols modificar:");
-        int row = sc.nextInt();
+        do {
+            System.out.println("\nDim la fila de la casella que vols modificar:");
+            while (!sc.hasNextInt()) {
+                System.out.println("Això no es un número! Tria un número");
+                sc.next();
+            }
+            row = sc.nextInt();
+        } while (row < 0);
         int checkedRow = checkRows(row);
 
-        System.out.println("Dim la columna de la casella que vols modificar");
-        int column = sc.nextInt();
+        do {
+            System.out.println("Dim la columna de la casella que vols modificar:");
+            while (!sc.hasNextInt()) {
+                System.out.println("Això no es un número! Tria un número");
+                sc.next();
+            }
+            column = sc.nextInt();
+        } while (column < 0);
+
         int checkedColumn = checkColumns(column);
 
         int [] box = {checkedRow, checkedColumn};
@@ -623,14 +703,19 @@ public class Board {
             this.board[checkedBox[0]][checkedBox[1]].cover(false);
             if (this.board[checkedBox[0]][checkedBox[1]].hasBomb()) {
                 printBoard();
-                System.out.println("Has perdut! LOSER");
+                System.out.println("\n" + "Has perdut! LOSER" + "\n");
+                Play.menu();
             } else {
                 printBoard();
                 nextMove();
             }
         }
         if (checkedAction == 'b'){
-            this.board[checkedBox[0]][checkedBox[1]].putFlag(true);
+            if (!this.board[checkedBox[0]][checkedBox[1]].hasFlag()) {
+                this.board[checkedBox[0]][checkedBox[1]].putFlag(true);
+            } else {
+                this.board[checkedBox[0]][checkedBox[1]].putFlag(false);
+            }
             printBoard();
             nextMove();
         }

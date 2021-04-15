@@ -1,4 +1,4 @@
-package com.company;
+package src.com.company;
 
 public class Box {
 
@@ -78,15 +78,33 @@ public class Box {
                 setState(BoxRepresentation.BOMB);
             } else {
                 switch (getBombsAround()) {
-                    case 0 -> setState(BoxRepresentation.ZERO);
-                    case 1 -> setState(BoxRepresentation.ONE);
-                    case 2 -> setState(BoxRepresentation.TWO);
-                    case 3 -> setState(BoxRepresentation.THREE);
-                    case 4 -> setState(BoxRepresentation.FOUR);
-                    case 5 -> setState(BoxRepresentation.FIVE);
-                    case 6 -> setState(BoxRepresentation.SIX);
-                    case 7 -> setState(BoxRepresentation.SEVEN);
-                    case 8 -> setState(BoxRepresentation.EIGHT);
+                    case 0 :
+                        setState(BoxRepresentation.ZERO);
+                        break;
+                    case 1 :
+                        setState(BoxRepresentation.ONE);
+                        break;
+                    case 2 :
+                        setState(BoxRepresentation.TWO);
+                        break;
+                    case 3 :
+                        setState(BoxRepresentation.THREE);
+                        break;
+                    case 4 :
+                        setState(BoxRepresentation.FOUR);
+                        break;
+                    case 5 :
+                        setState(BoxRepresentation.FIVE);
+                        break;
+                    case 6 :
+                        setState(BoxRepresentation.SIX);
+                        break;
+                    case 7 :
+                        setState(BoxRepresentation.SEVEN);
+                        break;
+                    case 8 :
+                        setState(BoxRepresentation.EIGHT);
+                        break;
                 }
             }
         }
