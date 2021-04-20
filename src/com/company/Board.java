@@ -1,4 +1,4 @@
-package src.com.company;
+package com.company;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -735,6 +735,9 @@ public class Board {
                 System.out.println("\n" + "Has perdut! LOSER" + "\n");
                 Play.menu();
             } else {
+                if (this.board[checkedBox[0]][checkedBox[1]].getBombsAround() == 0) {
+                    uncoverAroundZero(checkedBox);
+                }
                 printBoard();
                 nextMove();
             }
