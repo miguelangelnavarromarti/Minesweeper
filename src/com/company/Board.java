@@ -101,6 +101,8 @@ public class Board {
 
     public void printBoard() {
 
+        System.out.println("");
+
         for (int i = 0; i < this.numColumns; i++) {
             if (i == 0) {
                 System.out.print("     " + i + "  ");
@@ -126,7 +128,7 @@ public class Board {
             }
             System.out.println();
         }
-        System.out.println("Te queden " + flagsLeft() + " banderes per col·locar");
+        System.out.println("\nTe queden " + flagsLeft() + " banderes per col·locar");
     }
 
     private int numberOfBombs () {
