@@ -96,8 +96,9 @@ public class Board {
 
         if (!this.board[randomRow][randomColumn].hasBomb() && this.board[randomRow][randomColumn].isCovered()) {
             this.board[randomRow][randomColumn].putBomb(true);
-        } else {
             createBomb(numberOfBombs-1);
+        } else {
+            createBomb(numberOfBombs);
         }
     }
 
@@ -610,9 +611,7 @@ public class Board {
         uncoverFirstBox(firstBox);
         uncoverAroundFirstBox(firstBox);
 
-        for (int i = 0; i < numberOfBombs; i++) {
-            createBomb(numberOfBombs);
-        }
+        createBomb(numberOfBombs);
 
         for (int row = 0; row < this.board.length; row++) {
             for (int column = 0; column < this.board[row].length; column++) {
