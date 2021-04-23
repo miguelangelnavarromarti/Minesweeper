@@ -1,4 +1,7 @@
-package com.company;
+package src.com.company;
+
+import src.com.company.Box;
+import src.com.company.Play;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -92,7 +95,6 @@ public class Board {
         }
 
         if (!this.board[randomRow][randomColumn].hasBomb() && this.board[randomRow][randomColumn].isCovered()) {
-            //this.board[randomRow][randomColumn].setState(BoxRepresentation.BOMB);
             this.board[randomRow][randomColumn].putBomb(true);
         } else {
             createBomb(numberOfBombs-1);
@@ -678,8 +680,6 @@ public class Board {
 
     private boolean checkWin () {
 
-
-
         for (int i = 0; i < this.board.length; i++) {
             for (int j = 0; j < this.board[i].length; j++) {
                 if (this.board[i][j].isCovered() && !this.board[i][j].hasBomb()) {
@@ -736,6 +736,7 @@ public class Board {
                 printBoard();
                 System.out.println("\n" + "Has perdut! LOSER" + "\n");
                 Play.menu();
+
             } else {
                 if (this.board[checkedBox[0]][checkedBox[1]].getBombsAround() == 0) {
                     uncoverAroundZero(checkedBox);

@@ -1,4 +1,4 @@
-package com.company;
+package src.com.company;
 
 import java.util.Scanner;
 
@@ -37,6 +37,18 @@ public class Play {
         return bomb;
     }
 
+    private static long startTimer(){
+        return System.nanoTime();
+    }
+
+    private static double stopTimer(long start) {
+        return (double) ((System.nanoTime()-start)/1000000000);
+    }
+
+    private static void printTimer(double time) {
+        System.out.println("Has tardat " + time);
+    }
+
     public static void menu() {
         Scanner sc = new Scanner(System.in);
 
@@ -64,7 +76,7 @@ public class Play {
         start(opcio);
     }
 
-    private static void start(int answer) {
+    private static void start(int answer){
         Scanner sc = new Scanner(System.in);
 
         int[] firstBox;
@@ -74,22 +86,31 @@ public class Play {
                 Board principiant = new Board(8, 8);
                 principiant.printBoard();
                 firstBox = principiant.selectFirstBox();
+                long startPrincipiant = startTimer();
                 principiant.printBoardFirstMove(10, firstBox);
                 principiant.nextMove();
+                double stopPrincipiant = stopTimer(startPrincipiant);
+                printTimer(stopPrincipiant);
                 break;
             case 2:
                 Board normal = new Board (16, 16);
                 normal.printBoard();
                 firstBox = normal.selectFirstBox();
+                long startNormal = startTimer();
                 normal.printBoardFirstMove(40, firstBox);
                 normal.nextMove();
+                double stopNormal = stopTimer(startNormal);
+                printTimer(stopNormal);
                 break;
             case 3:
                 Board dificil = new Board (16, 32);
                 dificil.printBoard();
                 firstBox = dificil.selectFirstBox();
+                long startDificil = startTimer();
                 dificil.printBoardFirstMove(99, firstBox);
                 dificil.nextMove();
+                double stopDificil = stopTimer(startDificil);
+                printTimer(stopDificil);
                 break;
             case 4:
                 // Comprova les files
@@ -112,8 +133,11 @@ public class Play {
                 personalitzat.printBoard();
 
                 firstBox = personalitzat.selectFirstBox();
+                long startPersonalitzat = startTimer();
                 personalitzat.printBoardFirstMove(checkedBombs, firstBox);
                 personalitzat.nextMove();
+                double stopPersonalitzat = stopTimer(startPersonalitzat);
+                printTimer(stopPersonalitzat);
                 break;
             case 5:
                 // Falta afegir tota la funcionalitat

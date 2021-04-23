@@ -1,4 +1,6 @@
-package com.company;
+package src.com.company;
+
+import src.com.company.Color;
 
 public enum BoxRepresentation {
     COVERED("[ " + Color.WHITE + "#" + Color.RESET + " ]"),

@@ -1,4 +1,6 @@
-package com.company;
+package src.com.company;
+
+import src.com.company.BoxRepresentation;
 
 public class Box {
 
