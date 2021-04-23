@@ -696,7 +696,7 @@ public class Board {
         int column;
 
         if (checkWin()) {
-            System.out.println("\n" + "You WIN" + "\n");
+            System.out.println("\n" + "You WIN");
             return;
         }
 
@@ -734,9 +734,7 @@ public class Board {
             this.board[checkedBox[0]][checkedBox[1]].cover(false);
             if (this.board[checkedBox[0]][checkedBox[1]].hasBomb()) {
                 printBoard();
-                System.out.println("\n" + "Has perdut! LOSER" + "\n");
-                Play.menu();
-
+                System.out.println("\n" + "Has perdut! LOSER");
             } else {
                 if (this.board[checkedBox[0]][checkedBox[1]].getBombsAround() == 0) {
                     uncoverAroundZero(checkedBox);

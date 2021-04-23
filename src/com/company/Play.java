@@ -46,7 +46,7 @@ public class Play {
     }
 
     private static void printTimer(double time) {
-        System.out.println("Has tardat " + time);
+        System.out.println("Has tardat " + time + " segons\n");
     }
 
     public static void menu() {
@@ -113,17 +113,14 @@ public class Play {
                 printTimer(stopDificil);
                 break;
             case 4:
-                // Comprova les files
                 System.out.println("Quantes files vols que tengui el taulell?");
                 int answerRows = sc.nextInt();
                 int checkedRows = checkRows(answerRows);
 
-                // Comprova les columnes
                 System.out.println("Quantes columnes vols que tengui el taulell?");
                 int answerColumns = sc.nextInt();
                 int checkedColumns = checkColumns(answerColumns);
 
-                //Falta comprovar si el número de bombes introduit es vàlid
                 System.out.println("Quantes bombes vols que tengui el taulell?");
                 int answerBombs = sc.nextInt();
                 int checkedBombs = checkBombs(answerBombs, checkedRows, checkedColumns);
