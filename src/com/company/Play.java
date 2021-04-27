@@ -84,6 +84,8 @@ public class Play {
         start(opcio);
     }
 
+
+
     private static void start(int answer){
         Scanner sc = new Scanner(System.in);
 
@@ -100,7 +102,9 @@ public class Play {
                 beginner.nextMove();
                 double stopBeginner = RankingBeginner.stopTimer(startBeginner);
                 RankingBeginner.printTimer(stopBeginner);
-                RankingBeginner.addRecord(nameBeginner, stopBeginner);
+                if (beginner.checkWin()) {
+                    RankingBeginner.addRecord(nameBeginner, stopBeginner);
+                }
                 break;
             case 2:
                 String nameNormal = giveName();
@@ -112,7 +116,9 @@ public class Play {
                 normal.nextMove();
                 double stopNormal = RankingNormal.stopTimer(startNormal);
                 RankingNormal.printTimer(stopNormal);
-                RankingBeginner.addRecord(nameNormal, stopNormal);
+                if (normal.checkWin()) {
+                    RankingBeginner.addRecord(nameNormal, stopNormal);
+                }
                 break;
             case 3:
                 String nameHard = giveName();
@@ -124,7 +130,9 @@ public class Play {
                 hard.nextMove();
                 double stopHard = RankingHard.stopTimer(startHard);
                 RankingHard.printTimer(stopHard);
-                RankingHard.addRecord(nameHard, stopHard);
+                if (hard.checkWin()) {
+                    RankingHard.addRecord(nameHard, stopHard);
+                }
                 break;
             case 4:
                 System.out.println("Quantes files vols que tengui el taulell?");
@@ -148,6 +156,8 @@ public class Play {
                 break;
             case 5:
                 // Falta afegir tota la funcionalitat
+                RankingBeginner.createFile();
+                //RankingBeginner.readFile();
                 break;
             case 6:
                 System.out.println("Gràcies per jugar al Buscaminas");

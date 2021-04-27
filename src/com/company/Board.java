@@ -677,7 +677,7 @@ public class Board {
         return action;
     }
 
-    private boolean checkWin () {
+    public boolean checkWin () {
 
         for (int i = 0; i < this.board.length; i++) {
             for (int j = 0; j < this.board[i].length; j++) {
@@ -694,7 +694,7 @@ public class Board {
         int row;
         int column;
 
-        if (checkWin()) {
+        if (!checkWin()) {
             System.out.println("\n" + "You WIN");
             return;
         }

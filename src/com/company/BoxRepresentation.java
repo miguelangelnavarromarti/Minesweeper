@@ -1,20 +1,18 @@
 package src.com.company;
 
-import src.com.company.Color;
-
 public enum BoxRepresentation {
     COVERED("[ " + Color.WHITE + "#" + Color.RESET + " ]"),
     FLAG("[ " + Color.YELLOW + "B" + Color.RESET + " ]"),
     BOMB("[ " + Color.RED + "X" + Color.RESET + " ]"),
     ZERO("[ " + Color.CYAN + "0" + Color.RESET + " ]"),
     ONE("[ " + Color.CYAN + "1" + Color.RESET + " ]"),
-    TWO("[ " + Color.CYAN + "2" + Color.RESET + " ]"),
-    THREE("[ " + Color.BLUE + "3" + Color.RESET + " ]"),
-    FOUR("[ " + Color.BLUE + "4" + Color.RESET + " ]"),
-    FIVE("[ " + Color.BLUE + "5" + Color.RESET + " ]"),
-    SIX("[ " + Color.BLUE + "6" + Color.RESET + " ]"),
-    SEVEN("[ " + Color.BLUE + "7" + Color.RESET + " ]"),
-    EIGHT("[ " + Color.BLUE + "8" + Color.RESET + " ]");
+    TWO("[ " + Color.BLUE + "2" + Color.RESET + " ]"),
+    THREE("[ " + Color.PURPLE + "3" + Color.RESET + " ]"),
+    FOUR("[ " + Color.PURPLE + "4" + Color.RESET + " ]"),
+    FIVE("[ " + Color.PURPLE + "5" + Color.RESET + " ]"),
+    SIX("[ " + Color.PURPLE + "6" + Color.RESET + " ]"),
+    SEVEN("[ " + Color.PURPLE + "7" + Color.RESET + " ]"),
+    EIGHT("[ " + Color.PURPLE + "8" + Color.RESET + " ]");
 
     private String value;
 
