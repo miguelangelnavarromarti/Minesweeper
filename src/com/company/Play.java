@@ -1,6 +1,8 @@
 package src.com.company;
 
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Play {
 
@@ -37,16 +39,22 @@ public class Play {
         return bomb;
     }
 
-    private static long startTimer(){
-        return System.nanoTime();
-    }
+    private static String giveName () {
+        Scanner sc = new Scanner(System.in);
 
-    private static double stopTimer(long start) {
-        return (double) ((System.nanoTime()-start)/1000000000);
-    }
+        String initialsRegex = "^.{3}$";
+        boolean matches;
+        String name;
 
-    private static void printTimer(double time) {
-        System.out.println("Has tardat " + time + " segons\n");
+        Pattern pattern = Pattern.compile(initialsRegex);
+
+        do {
+            System.out.println("Escriu les teves tres inicials (lletres o números) per guardar la puntuació:");
+            name = sc.nextLine();
+            Matcher matcher = pattern.matcher(name);
+            matches = matcher.matches();
+        } while (!matches);
+        return name;
     }
 
     public static void menu() {
@@ -83,34 +91,40 @@ public class Play {
 
         switch (answer) {
             case 1:
-                Board principiant = new Board(8, 8);
-                principiant.printBoard();
-                firstBox = principiant.selectFirstBox();
-                long startPrincipiant = startTimer();
-                principiant.printBoardFirstMove(10, firstBox);
-                principiant.nextMove();
-                double stopPrincipiant = stopTimer(startPrincipiant);
-                printTimer(stopPrincipiant);
+                String nameBeginner = giveName();
+                Board beginner = new Board(8, 8);
+                beginner.printBoard();
+                firstBox = beginner.selectFirstBox();
+                long startBeginner = RankingBeginner.startTimer();
+                beginner.printBoardFirstMove(10, firstBox);
+                beginner.nextMove();
+                double stopBeginner = RankingBeginner.stopTimer(startBeginner);
+                RankingBeginner.printTimer(stopBeginner);
+                RankingBeginner.addRecord(nameBeginner, stopBeginner);
                 break;
             case 2:
+                String nameNormal = giveName();
                 Board normal = new Board (16, 16);
                 normal.printBoard();
                 firstBox = normal.selectFirstBox();
-                long startNormal = startTimer();
+                long startNormal = RankingNormal.startTimer();
                 normal.printBoardFirstMove(40, firstBox);
                 normal.nextMove();
-                double stopNormal = stopTimer(startNormal);
-                printTimer(stopNormal);
+                double stopNormal = RankingNormal.stopTimer(startNormal);
+                RankingNormal.printTimer(stopNormal);
+                RankingBeginner.addRecord(nameNormal, stopNormal);
                 break;
             case 3:
-                Board dificil = new Board (16, 32);
-                dificil.printBoard();
-                firstBox = dificil.selectFirstBox();
-                long startDificil = startTimer();
-                dificil.printBoardFirstMove(99, firstBox);
-                dificil.nextMove();
-                double stopDificil = stopTimer(startDificil);
-                printTimer(stopDificil);
+                String nameHard = giveName();
+                Board hard = new Board (16, 32);
+                hard.printBoard();
+                firstBox = hard.selectFirstBox();
+                long startHard = RankingHard.startTimer();
+                hard.printBoardFirstMove(99, firstBox);
+                hard.nextMove();
+                double stopHard = RankingHard.stopTimer(startHard);
+                RankingHard.printTimer(stopHard);
+                RankingHard.addRecord(nameHard, stopHard);
                 break;
             case 4:
                 System.out.println("Quantes files vols que tengui el taulell?");
@@ -124,17 +138,13 @@ public class Play {
                 System.out.println("Quantes bombes vols que tengui el taulell?");
                 int answerBombs = sc.nextInt();
                 int checkedBombs = checkBombs(answerBombs, checkedRows, checkedColumns);
-                Board personalitzat = new Board(checkedRows, checkedColumns);
+                Board customized = new Board(checkedRows, checkedColumns);
 
-                //Aquí cream el taulell (sense bombes)
-                personalitzat.printBoard();
+                customized.printBoard();
 
-                firstBox = personalitzat.selectFirstBox();
-                long startPersonalitzat = startTimer();
-                personalitzat.printBoardFirstMove(checkedBombs, firstBox);
-                personalitzat.nextMove();
-                double stopPersonalitzat = stopTimer(startPersonalitzat);
-                printTimer(stopPersonalitzat);
+                firstBox = customized.selectFirstBox();
+                customized.printBoardFirstMove(checkedBombs, firstBox);
+                customized.nextMove();
                 break;
             case 5:
                 // Falta afegir tota la funcionalitat
