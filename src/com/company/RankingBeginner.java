@@ -8,8 +8,6 @@ import java.util.Map;
 public class RankingBeginner extends Ranking{
 
     private static Map<String, Double> nameTime = new HashMap<String, Double>();
-    private static Map<Integer, Double> positionTime = new HashMap<Integer, Double>();
-
 
     /*public static void readFile() {
         File archivo = null;
@@ -44,8 +42,42 @@ public class RankingBeginner extends Ranking{
         }
     }*/
 
-    public static void createFile() {
-        FileWriter fichero = null;
+    public static void createFile() throws IOException {
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter("Minesweeper/src/com/company/RankingBeginners.txt", true));
+        BufferedReader br = new BufferedReader(new FileReader("Minesweeper/src/com/company/RankingBeginners.txt"));
+
+
+        String document;
+        if ((document = br.readLine()) != null) {
+            String[] players = document.split("\n");
+            for (int i = 0; i < players.length; i++){
+                addRecord(players[i].split(", ")[1],Double.parseDouble(players[i].split(", ")[2]));
+            }
+        }
+
+        String rankingBeginners = "";
+        for (String key : nameTime.keySet()){
+            rankingBeginners = rankingBeginners + key + ", " + nameTime.get(key) + "\n";
+        }
+        System.out.println(rankingBeginners);
+        bw.write(rankingBeginners);
+        bw.newLine();
+        bw.write("adeu");
+        bw.flush();
+
+        String line;
+        String path = "testFile.txt";
+        while ((line = br.readLine()) != null) {
+
+            System.out.println(line);
+        }
+
+        bw.close();
+        br.close();
+
+
+        /*FileWriter fichero = null;
         PrintWriter pw = null;
         try {
             fichero = new FileWriter("Minesweeper/src/com/company/RankingBeginners.txt",true);
@@ -65,6 +97,6 @@ public class RankingBeginner extends Ranking{
             } catch (Exception e2) {
                 e2.printStackTrace();
             }
-        }
+        }*/
     }
 }

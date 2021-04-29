@@ -34,37 +34,18 @@ public class Board {
         return numColumns;
     }
 
-    private void checkFirstRow(int answerRow){
-        if (answerRow >= 0 && answerRow < this.getNumRows()) {
-            return;
-        } else {
-            System.out.println("\nPrimera fila no vàlida, ha de ser un número entre 1 i " + (this.getNumRows()-1) + " ambdos inclosos");
-            selectFirstRow();
-        }
-    }
-
-    private void checkFirstColumn(int answerColumn){
-        if (answerColumn >= 0 && answerColumn < this.getNumColumns()) {
-            return;
-        } else {
-            System.out.println("Primera columna no vàlida, ha de ser un número entre 1 i " + (this.getNumColumns()-1) + " ambdos inclosos");
-            selectFirstColumn();
-        }
-    }
-
     private int selectFirstRow() {
-        Scanner sc = new Scanner(System.in);
 
         int answerRow;
         do {
-            System.out.println("\nSelecciona la primera fila:");
+            Scanner sc = new Scanner(System.in);
+            System.out.println("\nSelecciona la primera fila ha de ser un número entre 1 i " + (this.getNumRows()-1) + " ambdos inclosos:");
             while (!sc.hasNextInt()) {
-                System.out.println("Això no es un número! Tria un número");
-                sc.next();
+                System.out.println("Això no es un número! Tria un número, ha de ser un número entre 0 i " + (this.getNumRows()-1) + " ambdos inclosos");
+                sc.nextLine();
             }
             answerRow = sc.nextInt();
-        } while (answerRow < 0);
-        checkFirstRow(answerRow);
+        } while (answerRow < 0 || answerRow > this.numRows);
         return answerRow;
     }
 
@@ -74,14 +55,13 @@ public class Board {
         int answerColumn;
 
         do {
-            System.out.println("Selecciona la primera columna:");
+            System.out.println("Selecciona la primera columna, ha de ser un número entre 1 i " + (this.getNumColumns()-1) + " ambdos inclosos:");
             while (!sc.hasNextInt()) {
-                System.out.println("Això no es un número! Tria un número");
+                System.out.println("Això no es un número! Tria un número, ha de ser un número entre 1 i " + (this.getNumColumns()-1) + " ambdos inclosos");
                 sc.next();
             }
             answerColumn = sc.nextInt();
-        } while (answerColumn < 0);
-        checkFirstColumn(answerColumn);
+        } while (answerColumn < 0 || answerColumn > this.numColumns);
         return answerColumn;
     }
 
@@ -637,11 +617,10 @@ public class Board {
                 System.out.println("Has d'introduir un número de files superior o igual a 0 e inferior a " + (this.numRows-1));
                 while (!sc.hasNextInt()) {
                     System.out.println("Això no es un número! Tria un número");
-                    sc.next();
+                    sc.nextLine();
                 }
                 answer = sc.nextInt();
             } while (answer <= 0);
-
             return checkRows(answer);
         }
         return rows;
@@ -708,8 +687,7 @@ public class Board {
                 sc.next();
             }
             row = sc.nextInt();
-        } while (row < 0);
-        int checkedRow = checkRows(row);
+        } while (row < 0 || row > this.numRows);
 
         do {
             System.out.println("Dim la columna de la casella que vols modificar:");
@@ -718,11 +696,9 @@ public class Board {
                 sc.next();
             }
             column = sc.nextInt();
-        } while (column < 0);
+        } while (column < 0 || column > this.numColumns);
 
-        int checkedColumn = checkColumns(column);
-
-        int [] box = {checkedRow, checkedColumn};
+        int [] box = {row, column};
         int [] checkedBox = checkBox(box);
 
         System.out.println("Dim si vols destapar (d) o posar una bandera (b)");
@@ -734,6 +710,7 @@ public class Board {
             if (this.board[checkedBox[0]][checkedBox[1]].hasBomb()) {
                 printBoard();
                 System.out.println("\n" + "Has perdut! LOSER");
+                return;
             } else {
                 if (this.board[checkedBox[0]][checkedBox[1]].getBombsAround() == 0) {
                     uncoverAroundZero(checkedBox);

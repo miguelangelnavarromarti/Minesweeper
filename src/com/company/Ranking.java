@@ -8,35 +8,38 @@ import java.util.Map;
 
 public class Ranking {
     private static Map<String, Double> nameTime = new HashMap<String, Double>();
-    private static Map<Integer, Double> positionTime = new HashMap<Integer, Double>();
 
-    private static void orderRecords() {
-        Map<Integer, Double> auxiliar = new HashMap<Integer, Double>();
+    protected static void orderRecords() {
+        Map<String, Double> auxiliar = new HashMap<String, Double>();
 
-        ArrayList<Double> valueList = new ArrayList<Double>(positionTime.values());
+        ArrayList<Double> valueList = new ArrayList<Double>(nameTime.values());
+        ArrayList<String> keyList = new ArrayList<String>(nameTime.keySet());
 
-        double aux;
+        double auxTime;
+        String auxName;
 
         for (int i = 0; i < valueList.size(); i++) {
             for (int j = i; j > 0; j--) {
                 if (valueList.get(j) < valueList.get(j - 1)) {
-                    aux = valueList.get(j);
+                    auxTime = valueList.get(j);
+                    auxName = keyList.get(j);
                     valueList.set(j, valueList.get(j - 1));
-                    valueList.set(j - 1, aux);
+                    keyList.set(j, keyList.get(j-1));
+                    valueList.set(j - 1, auxTime);
+                    keyList.set(j-1, auxName);
                 }
             }
         }
         for (int x = 0; x < valueList.size(); x++) {
-            auxiliar.put(x, valueList.get(x));
+            auxiliar.put(keyList.get(x), valueList.get(x));
         }
-        positionTime = auxiliar;
+        nameTime = auxiliar;
     }
 
     public static void addRecord(String name, double time) {
 
         if (!nameTime.containsKey(name)) {
             nameTime.put(name, time);
-            positionTime.put(positionTime.size()+1, time);
         }
         orderRecords();
     }

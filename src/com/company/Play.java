@@ -1,5 +1,6 @@
 package src.com.company;
 
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -49,7 +50,7 @@ public class Play {
         Pattern pattern = Pattern.compile(initialsRegex);
 
         do {
-            System.out.println("Escriu les teves tres inicials (lletres o números) per guardar la puntuació:");
+            System.out.println("Escriu les teves tres inicials (qualsevol caràcter) per guardar la puntuació:");
             name = sc.nextLine();
             Matcher matcher = pattern.matcher(name);
             matches = matcher.matches();
@@ -57,7 +58,7 @@ public class Play {
         return name;
     }
 
-    public static void menu() {
+    public static void menu() throws IOException {
         Scanner sc = new Scanner(System.in);
 
         int opcio;
@@ -86,7 +87,7 @@ public class Play {
 
 
 
-    private static void start(int answer){
+    private static void start(int answer) throws IOException {
         Scanner sc = new Scanner(System.in);
 
         int[] firstBox;
@@ -160,7 +161,8 @@ public class Play {
                 //RankingBeginner.readFile();
                 break;
             case 6:
-                System.out.println("Gràcies per jugar al Buscaminas");
+                System.out.println("\nGràcies per jugar al Buscaminas");
+                break;
             default:
                 System.out.println("La opció introduida no existeix. \n");
                 break;
