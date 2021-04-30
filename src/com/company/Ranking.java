@@ -32,15 +32,12 @@ public class Ranking {
         for (int x = 0; x < valueList.size(); x++) {
             auxiliar.put(keyList.get(x), valueList.get(x));
         }
+        nameTime.clear();
         nameTime = auxiliar;
     }
 
     public void addRecord(String name, double time) {
-
-        if (!nameTime.containsKey(name)) {
-            nameTime.put(name, time);
-        }
-        orderRecords();
+        nameTime.put(name, time);
     }
 
     public long startTimer(){
@@ -63,26 +60,28 @@ public class Ranking {
 
     public void createFile(String path) throws IOException {
 
+
         BufferedWriter bw = new BufferedWriter(new FileWriter(path, true));
         BufferedReader br = new BufferedReader(new FileReader(path));
 
         String document;
-        if ((document = br.readLine()) != null) {
-            String[] players = document.split("\n");
+        String playerList = "";
+        while ((document = br.readLine()) != null) {
+            playerList = document + "\n" + playerList;
+            String[] players = playerList.split("\n");
             for (int i = 0; i < players.length; i++){
                 addRecord(players[i].split(" - ")[0],Double.parseDouble(players[i].split(" - ")[1]));
             }
         }
+        // ORDENA CORRECTAMENT PERÒ ES PUT DES MAP HO DESORDENA UN ALTRE PIC
+        orderRecords();
 
         String rankingBeginners = "";
         for (String key : nameTime.keySet()){
             rankingBeginners = rankingBeginners + key + " - " + nameTime.get(key) + "\n";
         }
         //CONTINUAR AQUÍ!!!!
-        System.out.println(rankingBeginners);
         bw.write(rankingBeginners);
-        bw.newLine();
-        bw.write("adeu");
         bw.flush();
 
         String line;
@@ -129,5 +128,5 @@ public class Ranking {
             }
         }
     }*/
-}
+
 

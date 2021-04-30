@@ -105,9 +105,9 @@ public class Play {
                 beginner.nextMove();
                 double stopBeginner = rankingBeginner.stopTimer(startBeginner);
                 rankingBeginner.printTimer(stopBeginner);
-                if (beginner.checkWin()){
+                if (!beginner.checkWin()){
                     rankingBeginner.addRecord(nameBeginner, stopBeginner);
-                    rankingBeginner.createFile("Minesweeper/src/com/company/RankingBeginners.txt");
+                    rankingBeginner.createFile("src/com/company/RankingBeginners.txt");
                 }
                 break;
             case 2:

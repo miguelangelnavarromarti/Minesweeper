@@ -1,0 +1,14 @@
+RED - 15.0
+MKI - 3.0
+RED - 15.0
+MKI - 3.0
+TRX - 2.0
+RED - 15.0
+VGT - 6.0
+MKI - 3.0
+TRX - 2.0
+RED - 15.0
+VGT - 6.0
+SGK - 32.0
+MKI - 3.0
+TRX - 2.0
