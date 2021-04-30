@@ -1,4 +1,4 @@
-package src.com.company;
+package com.company;
 
 import java.io.*;
 import java.lang.*;

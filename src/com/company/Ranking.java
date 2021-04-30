@@ -1,15 +1,14 @@
-package src.com.company;
+package com.company;
 
-import java.io.FileWriter;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Ranking {
-    private static Map<String, Double> nameTime = new HashMap<String, Double>();
+    private Map<String, Double> nameTime = new HashMap<String, Double>();
 
-    protected static void orderRecords() {
+    private void orderRecords() {
         Map<String, Double> auxiliar = new HashMap<String, Double>();
 
         ArrayList<Double> valueList = new ArrayList<Double>(nameTime.values());
@@ -36,7 +35,7 @@ public class Ranking {
         nameTime = auxiliar;
     }
 
-    public static void addRecord(String name, double time) {
+    public void addRecord(String name, double time) {
 
         if (!nameTime.containsKey(name)) {
             nameTime.put(name, time);
@@ -44,17 +43,91 @@ public class Ranking {
         orderRecords();
     }
 
-    public static long startTimer(){
+    public long startTimer(){
         return System.nanoTime();
     }
 
-    public static double stopTimer(long start) {
+    public double stopTimer(long start) {
         return (double) ((System.nanoTime()-start)/1000000000);
     }
 
-    public static void printTimer(double time) {
+    public void printTimer(double time) {
         System.out.println("Has tardat " + time + " segons\n");
     }
 
+    public void printRanking () {
+        for (String key : nameTime.keySet()) {
+            System.out.println(key + " " + nameTime.get(key));
+        }
+    }
+
+    public void createFile(String path) throws IOException {
+
+        BufferedWriter bw = new BufferedWriter(new FileWriter(path, true));
+        BufferedReader br = new BufferedReader(new FileReader(path));
+
+        String document;
+        if ((document = br.readLine()) != null) {
+            String[] players = document.split("\n");
+            for (int i = 0; i < players.length; i++){
+                addRecord(players[i].split(" - ")[0],Double.parseDouble(players[i].split(" - ")[1]));
+            }
+        }
+
+        String rankingBeginners = "";
+        for (String key : nameTime.keySet()){
+            rankingBeginners = rankingBeginners + key + " - " + nameTime.get(key) + "\n";
+        }
+        //CONTINUAR AQUÍ!!!!
+        System.out.println(rankingBeginners);
+        bw.write(rankingBeginners);
+        bw.newLine();
+        bw.write("adeu");
+        bw.flush();
+
+        String line;
+        //String path = "testFile.txt";
+        while ((line = br.readLine()) != null) {
+
+            System.out.println(line);
+        }
+
+        bw.close();
+        br.close();
+        }
+    }
+
+    /*public static void readFile() {
+        File archivo = null;
+        FileReader fr = null;
+        BufferedReader br = null;
+
+        try {
+            // Apertura del fichero y creacion de BufferedReader para poder
+            // hacer una lectura comoda (disponer del metodo readLine()).
+            archivo = new File ("Minesweeper/src/com/company/RankingBeginners.txt");
+            fr = new FileReader (archivo);
+            br = new BufferedReader(fr);
+
+            // Lectura del fichero
+            String linea;
+            while((linea=br.readLine())!=null)
+                System.out.println(linea);
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            // En el finally cerramos el fichero, para asegurarnos
+            // que se cierra tanto si todo va bien como si salta
+            // una excepcion.
+            try{
+                if( null != fr ){
+                    fr.close();
+                }
+            }catch (Exception e2){
+                e2.printStackTrace();
+            }
+        }
+    }*/
 }
 

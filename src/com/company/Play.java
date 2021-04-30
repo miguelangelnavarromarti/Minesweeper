@@ -1,4 +1,4 @@
-package src.com.company;
+package com.company;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -85,10 +85,12 @@ public class Play {
         start(opcio);
     }
 
-
-
     private static void start(int answer) throws IOException {
         Scanner sc = new Scanner(System.in);
+
+        Ranking rankingBeginner = new Ranking();
+        Ranking rankingNormal = new Ranking();
+        Ranking rankingHard = new Ranking();
 
         int[] firstBox;
 
@@ -98,13 +100,14 @@ public class Play {
                 Board beginner = new Board(8, 8);
                 beginner.printBoard();
                 firstBox = beginner.selectFirstBox();
-                long startBeginner = RankingBeginner.startTimer();
+                long startBeginner = rankingBeginner.startTimer();
                 beginner.printBoardFirstMove(10, firstBox);
                 beginner.nextMove();
-                double stopBeginner = RankingBeginner.stopTimer(startBeginner);
-                RankingBeginner.printTimer(stopBeginner);
-                if (beginner.checkWin()) {
-                    RankingBeginner.addRecord(nameBeginner, stopBeginner);
+                double stopBeginner = rankingBeginner.stopTimer(startBeginner);
+                rankingBeginner.printTimer(stopBeginner);
+                if (beginner.checkWin()){
+                    rankingBeginner.addRecord(nameBeginner, stopBeginner);
+                    rankingBeginner.createFile("Minesweeper/src/com/company/RankingBeginners.txt");
                 }
                 break;
             case 2:
@@ -112,13 +115,13 @@ public class Play {
                 Board normal = new Board (16, 16);
                 normal.printBoard();
                 firstBox = normal.selectFirstBox();
-                long startNormal = RankingNormal.startTimer();
+                long startNormal = rankingNormal.startTimer();
                 normal.printBoardFirstMove(40, firstBox);
                 normal.nextMove();
-                double stopNormal = RankingNormal.stopTimer(startNormal);
-                RankingNormal.printTimer(stopNormal);
+                double stopNormal = rankingNormal.stopTimer(startNormal);
+                rankingNormal.printTimer(stopNormal);
                 if (normal.checkWin()) {
-                    RankingBeginner.addRecord(nameNormal, stopNormal);
+                    rankingNormal.addRecord(nameNormal, stopNormal);
                 }
                 break;
             case 3:
@@ -126,13 +129,13 @@ public class Play {
                 Board hard = new Board (16, 32);
                 hard.printBoard();
                 firstBox = hard.selectFirstBox();
-                long startHard = RankingHard.startTimer();
+                long startHard = rankingHard.startTimer();
                 hard.printBoardFirstMove(99, firstBox);
                 hard.nextMove();
-                double stopHard = RankingHard.stopTimer(startHard);
-                RankingHard.printTimer(stopHard);
+                double stopHard = rankingHard.stopTimer(startHard);
+                rankingHard.printTimer(stopHard);
                 if (hard.checkWin()) {
-                    RankingHard.addRecord(nameHard, stopHard);
+                    rankingHard.addRecord(nameHard, stopHard);
                 }
                 break;
             case 4:
@@ -156,8 +159,9 @@ public class Play {
                 customized.nextMove();
                 break;
             case 5:
+                rankingBeginner.printRanking();
                 // Falta afegir tota la funcionalitat
-                RankingBeginner.createFile();
+                //RankingBeginner.createFile();
                 //RankingBeginner.readFile();
                 break;
             case 6:

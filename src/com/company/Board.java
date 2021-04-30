@@ -1,7 +1,7 @@
-package src.com.company;
+package com.company;
 
-import src.com.company.Box;
-import src.com.company.Play;
+import com.company.Box;
+import com.company.Play;
 
 import java.util.Random;
 import java.util.Scanner;
@@ -673,7 +673,7 @@ public class Board {
         int row;
         int column;
 
-        if (!checkWin()) {
+        if (checkWin()) {
             System.out.println("\n" + "You WIN");
             return;
         }
