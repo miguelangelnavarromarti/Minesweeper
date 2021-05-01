@@ -105,8 +105,8 @@ public class Play {
                 beginner.printBoardFirstMove(10, firstBox);
                 beginner.nextMove();
                 double stopBeginner = rankingBeginner.stopTimer(startBeginner);
-                rankingBeginner.printTimer(stopBeginner);
                 if (beginner.checkWin()){
+                    rankingBeginner.printTimer(stopBeginner);
                     rankingBeginner.addRecord(nameBeginner, stopBeginner);
                     rankingBeginner.createFile("src/com/company/RankingBeginners.txt");
                 }
@@ -120,8 +120,8 @@ public class Play {
                 normal.printBoardFirstMove(40, firstBox);
                 normal.nextMove();
                 double stopNormal = rankingNormal.stopTimer(startNormal);
-                rankingNormal.printTimer(stopNormal);
                 if (normal.checkWin()) {
+                    rankingNormal.printTimer(stopNormal);
                     rankingNormal.addRecord(nameNormal, stopNormal);
                     rankingNormal.createFile("src/com/company/RankingNormal.txt");
                 }
@@ -135,8 +135,8 @@ public class Play {
                 hard.printBoardFirstMove(99, firstBox);
                 hard.nextMove();
                 double stopHard = rankingHard.stopTimer(startHard);
-                rankingHard.printTimer(stopHard);
                 if (hard.checkWin()) {
+                    rankingHard.printTimer(stopHard);
                     rankingHard.addRecord(nameHard, stopHard);
                     rankingHard.createFile("src/com/company/RankingHard.txt");
                 }

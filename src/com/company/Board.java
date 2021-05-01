@@ -624,66 +624,65 @@ public class Board {
         int column;
 
         if (checkWin()) {
-            System.out.println("\n" + "You " + Color.GREEN + "WIN" + Color.RESET);
+            System.out.println("\n" + "Tu guanyes! " + Color.GREEN + "WINNER" + Color.RESET);
             return;
-        }
+        } else {
+            Scanner sc = new Scanner(System.in);
 
-        Scanner sc = new Scanner(System.in);
+            do {
+                System.out.println("\nDim la fila de la casella que vols modificar:");
+                while (!sc.hasNextInt()) {
+                    System.out.println("Això no es un número! Tria un número");
+                    sc.next();
+                }
+                row = sc.nextInt();
+            } while (row < 0 || row > this.numRows);
 
-        do {
-            System.out.println("\nDim la fila de la casella que vols modificar:");
-            while (!sc.hasNextInt()) {
-                System.out.println("Això no es un número! Tria un número");
-                sc.next();
+            do {
+                System.out.println("Dim la columna de la casella que vols modificar:");
+                while (!sc.hasNextInt()) {
+                    System.out.println("Això no es un número! Tria un número");
+                    sc.next();
+                }
+                column = sc.nextInt();
+            } while (column < 0 || column > this.numColumns);
+
+            int [] box = {row, column};
+            int [] checkedBox = checkBox(box);
+
+            System.out.println("Dim si vols destapar (d) o posar una bandera (b)");
+            char action = sc.next().charAt(0);
+            System.out.println("Has triat '" + action + "'");
+            char checkedAction = checkAction(action);
+
+            if (checkedAction == 'd' || checkedAction == 'D') {
+                this.board[checkedBox[0]][checkedBox[1]].cover(false);
+                if (this.board[checkedBox[0]][checkedBox[1]].hasBomb()) {
+                    printBoard();
+                    System.out.println("\n" + "Has perdut! " + Color.RED + "LOSER" + Color.RESET);
+                    return;
+                } else {
+                    if (this.board[checkedBox[0]][checkedBox[1]].getBombsAround() == 0) {
+                        uncoverAroundZero(checkedBox);
+                        uncoverAllAroundZero(this.numRows);
+                    }
+                    printBoard();
+                    nextMove();
+                }
             }
-            row = sc.nextInt();
-        } while (row < 0 || row > this.numRows);
-
-        do {
-            System.out.println("Dim la columna de la casella que vols modificar:");
-            while (!sc.hasNextInt()) {
-                System.out.println("Això no es un número! Tria un número");
-                sc.next();
-            }
-            column = sc.nextInt();
-        } while (column < 0 || column > this.numColumns);
-
-        int [] box = {row, column};
-        int [] checkedBox = checkBox(box);
-
-        System.out.println("Dim si vols destapar (d) o posar una bandera (b)");
-        char action = sc.next().charAt(0);
-        System.out.println("Has triat '" + action + "'");
-        char checkedAction = checkAction(action);
-
-        if (checkedAction == 'd' || checkedAction == 'D') {
-            this.board[checkedBox[0]][checkedBox[1]].cover(false);
-            if (this.board[checkedBox[0]][checkedBox[1]].hasBomb()) {
-                printBoard();
-                System.out.println("\n" + "Has perdut! " + Color.RED + "LOSER" + Color.RESET);
-                return;
-            } else {
-                if (this.board[checkedBox[0]][checkedBox[1]].getBombsAround() == 0) {
-                    uncoverAroundZero(checkedBox);
-                    uncoverAllAroundZero(this.numRows);
+            if (checkedAction == 'b' || checkedAction == 'B'){
+                if (!this.board[checkedBox[0]][checkedBox[1]].hasFlag()) {
+                    if (flagsLeft() == 0) {
+                        System.out.println("No pots posar més banderes.");
+                    } else {
+                        this.board[checkedBox[0]][checkedBox[1]].putFlag(true);
+                    }
+                } else {
+                    this.board[checkedBox[0]][checkedBox[1]].putFlag(false);
                 }
                 printBoard();
                 nextMove();
             }
-        }
-        if (checkedAction == 'b' || checkedAction == 'B'){
-            if (!this.board[checkedBox[0]][checkedBox[1]].hasFlag()) {
-                if (flagsLeft() == 0) {
-                    System.out.println("No pots posar més banderes.");
-                } else {
-                    this.board[checkedBox[0]][checkedBox[1]].putFlag(true);
-                }
-            } else {
-                this.board[checkedBox[0]][checkedBox[1]].putFlag(false);
-            }
-
-            printBoard();
-            nextMove();
         }
     }
 }
