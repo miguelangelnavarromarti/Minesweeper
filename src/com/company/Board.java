@@ -166,14 +166,6 @@ public class Board {
      */
 
     private void uncoverAroundFirstBox(int[] firstBoxPlace) {
-        /*Box upLeft = this.board[firstBoxPlace[0]-1][firstBoxPlace[1]-1];
-        Box upCenter = this.board[firstBoxPlace[0]-1][firstBoxPlace[1]];
-        Box upRight = this.board[firstBoxPlace[0]-1][firstBoxPlace[1]+1];
-        Box left = this.board[firstBoxPlace[0]][firstBoxPlace[1]-1];
-        Box right = this.board[firstBoxPlace[0]][firstBoxPlace[1]+1];
-        Box downLeft = this.board[firstBoxPlace[0]+1][firstBoxPlace[1]-1];
-        Box downCenter = this.board[firstBoxPlace[0]+1][firstBoxPlace[1]];
-        Box downRight = this.board[firstBoxPlace[0]+1][firstBoxPlace[1]+1];*/
 
         boolean cornerUpLeft = (firstBoxPlace[0] == 0 && firstBoxPlace[1] == 0);
         boolean borderLeft = (firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] == 0);
@@ -183,7 +175,7 @@ public class Board {
         boolean borderDown = (firstBoxPlace[0] == this.numRows-1 && firstBoxPlace[1] > 0 && firstBoxPlace[1] < this.numColumns-1);
         boolean cornerUpRight = (firstBoxPlace[0] == 0 && firstBoxPlace[1] == this.numColumns-1);
         boolean borderRight = (firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] == this.numColumns-1);
-        boolean cornerDownRight = (firstBoxPlace[0] > 0 && firstBoxPlace[0] < this.numRows-1 && firstBoxPlace[1] == this.numColumns-1);
+        boolean cornerDownRight = (firstBoxPlace[0] == this.numRows-1 && firstBoxPlace[1] == this.numColumns-1);
 
         if /* 1 */ (cornerUpLeft) {
             Box right = this.board[firstBoxPlace[0]][firstBoxPlace[1] + 1];
@@ -287,14 +279,6 @@ public class Board {
     }
 
     private void uncoverAroundZero(int[] boxWithZero) {
-        /*Box upLeft = this.board[boxWithZero[0]-1][boxWithZero[1]-1];
-        Box upCenter = this.board[boxWithZero[0]-1][boxWithZero[1]];
-        Box upRight = this.board[boxWithZero[0]-1][boxWithZero[1]+1];
-        Box left = this.board[boxWithZero[0]][boxWithZero[1]-1];
-        Box right = this.board[boxWithZero[0]][boxWithZero[1]+1];
-        Box downLeft = this.board[boxWithZero[0]+1][boxWithZero[1]-1];
-        Box downCenter = this.board[boxWithZero[0]+1][boxWithZero[1]];
-        Box downRight = this.board[boxWithZero[0]+1][boxWithZero[1]+1];*/
 
         boolean cornerUpLeft = boxWithZero[0] == 0 && boxWithZero[1] == 0;
         boolean borderLeft = boxWithZero[0] > 0 && boxWithZero[0] < this.numRows-1 && boxWithZero[1] == 0;
@@ -304,7 +288,7 @@ public class Board {
         boolean borderDown = boxWithZero[0] == this.numRows-1 && boxWithZero[1] > 0 && boxWithZero[1] < this.numColumns-1;
         boolean cornerUpRight = boxWithZero[0] == 0 && boxWithZero[1] == this.numColumns-1;
         boolean borderRight = boxWithZero[0] > 0 && boxWithZero[0] < this.numRows-1 && boxWithZero[1] == this.numColumns-1;
-        boolean cornerDownRight = boxWithZero[0] > 0 && boxWithZero[0] < this.numRows-1 && boxWithZero[1] == this.numColumns-1;
+        boolean cornerDownRight = boxWithZero[0] == this.numRows-1 && boxWithZero[1] == this.numColumns-1;
 
         if (this.board[boxWithZero[0]][boxWithZero[1]].getBombsAround() == 0) {
             if /* 1 */(cornerUpLeft) {
@@ -410,18 +394,16 @@ public class Board {
     }
 
     private void uncoverAllAroundZero(int trys) {
-        if (trys > 0) {
+        while (trys > 0) {
             for (int row = 0; row < this.board.length; row++) {
-                for( int column = 0; column < this.board[row].length; column++) {
-                    if(!this.board[row][column].isCovered()) {
+                for(int column = 0; column < this.board[row].length; column++) {
+                    if(!this.board[row][column].isCovered() && this.board[row][column].getBombsAround() == 0) {
                         int[] position = {row, column};
                         uncoverAroundZero(position);
                     }
                 }
             }
-            uncoverAllAroundZero(trys-1);
-        } else {
-            return;
+            trys--;
         }
     }
 
@@ -605,38 +587,6 @@ public class Board {
         printBoard();
     }
 
-    private int checkRows (int rows) {
-        Scanner sc = new Scanner(System.in);
-
-        int answer;
-
-        if (rows <= 0 && rows > this.numRows-1) {
-            System.out.println("Has d'introduir un número de files superior o igual a 0 e inferior a " + (this.numRows-1));
-
-            do {
-                System.out.println("Has d'introduir un número de files superior o igual a 0 e inferior a " + (this.numRows-1));
-                while (!sc.hasNextInt()) {
-                    System.out.println("Això no es un número! Tria un número");
-                    sc.nextLine();
-                }
-                answer = sc.nextInt();
-            } while (answer <= 0);
-            return checkRows(answer);
-        }
-        return rows;
-    }
-
-    private int checkColumns (int column) {
-        Scanner sc = new Scanner(System.in);
-
-        if (column <= 0 && column > this.numColumns-1) {
-            System.out.println("Has d'introduir un número de columnes superior o igual a 0 e inferior a " + (this.numColumns-1));
-            int answer = sc.nextInt();
-            return checkColumns(answer);
-        }
-        return column;
-    }
-
     private int [] checkBox (int [] box) {
         if (!this.board[box[0]][box[1]].isCovered()) {
             System.out.println("Has intentat fer una acció amb una casella destapada, torna a introduir la fila i la columna");
@@ -648,7 +598,7 @@ public class Board {
     private char checkAction (char action) {
         Scanner sc = new Scanner(System.in);
 
-        if (action != 'd' && action != 'b') {
+        if (action != 'd' && action != 'b' && action != 'D' && action != 'B' && sc.next().length() == 1) {
             System.out.println("Has d'introduir la lletra 'd' per destapar o la lletra 'b' per posar una bandera (ambdues sense cometes)");
             char answer = sc.next().charAt(0);
             return checkAction(answer);
@@ -705,7 +655,7 @@ public class Board {
         char action = sc.next().charAt(0);
         char checkedAction = checkAction(action);
 
-        if (checkedAction == 'd') {
+        if (checkedAction == 'd' || checkedAction == 'D') {
             this.board[checkedBox[0]][checkedBox[1]].cover(false);
             if (this.board[checkedBox[0]][checkedBox[1]].hasBomb()) {
                 printBoard();
@@ -714,20 +664,21 @@ public class Board {
             } else {
                 if (this.board[checkedBox[0]][checkedBox[1]].getBombsAround() == 0) {
                     uncoverAroundZero(checkedBox);
+                    uncoverAllAroundZero(this.numRows);
                 }
                 printBoard();
                 nextMove();
             }
         }
-        if (checkedAction == 'b'){
-            if (flagsLeft() == 0) {
-                System.out.println("No pots posar més banderes.");
-            } else {
-                if (!this.board[checkedBox[0]][checkedBox[1]].hasFlag()) {
-                    this.board[checkedBox[0]][checkedBox[1]].putFlag(true);
+        if (checkedAction == 'b' || checkedAction == 'B'){
+            if (!this.board[checkedBox[0]][checkedBox[1]].hasFlag()) {
+                if (flagsLeft() == 0) {
+                    System.out.println("No pots posar més banderes.");
                 } else {
-                    this.board[checkedBox[0]][checkedBox[1]].putFlag(false);
+                    this.board[checkedBox[0]][checkedBox[1]].putFlag(true);
                 }
+            } else {
+                this.board[checkedBox[0]][checkedBox[1]].putFlag(false);
             }
 
             printBoard();

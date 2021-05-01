@@ -63,7 +63,8 @@ public class Play {
 
         int opcio;
 
-        System.out.println("Benvingut al 'Buscaminas'! \n" +
+        System.out.println("-------------------------------\n" +
+                "Benvingut al 'Buscaminas'! \n" +
                 "\n" +
                 "Tenim les següents opcions: \n" +
                 "1. Principiant (8x8) amb 10 mines.\n" +
@@ -105,7 +106,7 @@ public class Play {
                 beginner.nextMove();
                 double stopBeginner = rankingBeginner.stopTimer(startBeginner);
                 rankingBeginner.printTimer(stopBeginner);
-                if (!beginner.checkWin()){
+                if (beginner.checkWin()){
                     rankingBeginner.addRecord(nameBeginner, stopBeginner);
                     rankingBeginner.createFile("src/com/company/RankingBeginners.txt");
                 }
@@ -120,8 +121,9 @@ public class Play {
                 normal.nextMove();
                 double stopNormal = rankingNormal.stopTimer(startNormal);
                 rankingNormal.printTimer(stopNormal);
-                if (normal.checkWin()) {
+                if (!normal.checkWin()) {
                     rankingNormal.addRecord(nameNormal, stopNormal);
+                    rankingNormal.createFile("src/com/company/RankingNormal.txt");
                 }
                 break;
             case 3:
@@ -134,8 +136,9 @@ public class Play {
                 hard.nextMove();
                 double stopHard = rankingHard.stopTimer(startHard);
                 rankingHard.printTimer(stopHard);
-                if (hard.checkWin()) {
+                if (!hard.checkWin()) {
                     rankingHard.addRecord(nameHard, stopHard);
+                    rankingHard.createFile("src/com/company/RankingHard.txt");
                 }
                 break;
             case 4:
@@ -159,14 +162,16 @@ public class Play {
                 customized.nextMove();
                 break;
             case 5:
-                rankingBeginner.printRanking();
-                // Falta afegir tota la funcionalitat
-                //RankingBeginner.createFile();
-                //RankingBeginner.readFile();
+                System.out.println("\nRanking Principiant\n----------------------------");
+                rankingBeginner.readFile("src/com/company/RankingBeginners.txt");
+                System.out.println("\nRanking Normal\n----------------------------");
+                rankingBeginner.readFile("src/com/company/RankingNormal.txt");
+                System.out.println("\nRanking Dificil\n----------------------------");
+                rankingBeginner.readFile("src/com/company/RankingHard.txt");
                 break;
             case 6:
                 System.out.println("\nGràcies per jugar al Buscaminas");
-                break;
+                return;
             default:
                 System.out.println("La opció introduida no existeix. \n");
                 break;
