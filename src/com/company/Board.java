@@ -624,7 +624,7 @@ public class Board {
         int column;
 
         if (checkWin()) {
-            System.out.println("\n" + "You WIN");
+            System.out.println("\n" + "You " + Color.GREEN + "WIN" + Color.RESET);
             return;
         }
 
@@ -653,13 +653,14 @@ public class Board {
 
         System.out.println("Dim si vols destapar (d) o posar una bandera (b)");
         char action = sc.next().charAt(0);
+        System.out.println("Has triat '" + action + "'");
         char checkedAction = checkAction(action);
 
         if (checkedAction == 'd' || checkedAction == 'D') {
             this.board[checkedBox[0]][checkedBox[1]].cover(false);
             if (this.board[checkedBox[0]][checkedBox[1]].hasBomb()) {
                 printBoard();
-                System.out.println("\n" + "Has perdut! LOSER");
+                System.out.println("\n" + "Has perdut! " + Color.RED + "LOSER" + Color.RESET);
                 return;
             } else {
                 if (this.board[checkedBox[0]][checkedBox[1]].getBombsAround() == 0) {

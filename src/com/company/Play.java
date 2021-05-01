@@ -121,7 +121,7 @@ public class Play {
                 normal.nextMove();
                 double stopNormal = rankingNormal.stopTimer(startNormal);
                 rankingNormal.printTimer(stopNormal);
-                if (!normal.checkWin()) {
+                if (normal.checkWin()) {
                     rankingNormal.addRecord(nameNormal, stopNormal);
                     rankingNormal.createFile("src/com/company/RankingNormal.txt");
                 }
@@ -136,7 +136,7 @@ public class Play {
                 hard.nextMove();
                 double stopHard = rankingHard.stopTimer(startHard);
                 rankingHard.printTimer(stopHard);
-                if (!hard.checkWin()) {
+                if (hard.checkWin()) {
                     rankingHard.addRecord(nameHard, stopHard);
                     rankingHard.createFile("src/com/company/RankingHard.txt");
                 }
